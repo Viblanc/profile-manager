@@ -1,5 +1,7 @@
 package com.github.viblanc.profilemanager.entity;
 
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -18,10 +20,10 @@ public class UserType {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "user_type", nullable = false)
-	private String type;
+	@Column(nullable = false, unique = true)
+	private String name;
 
-	@OneToMany(mappedBy = "type", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "userType", cascade = CascadeType.ALL)
 	private Set<User> users;
 
 	public Long getId() {
@@ -32,12 +34,12 @@ public class UserType {
 		this.id = id;
 	}
 
-	public String getType() {
-		return type;
+	public String getName() {
+		return name;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void getName(String name) {
+		this.name = name;
 	}
 
 	public Set<User> getUsers() {
@@ -46,5 +48,16 @@ public class UserType {
 
 	public void setUsers(Set<User> users) {
 		this.users = users;
+	}
+
+	public void addUser(User user) {
+		if (Objects.nonNull(user)) {
+			if (Objects.isNull(this.users)) {
+				this.users = new HashSet<>();
+			}
+
+			this.users.add(user);
+			user.setUserType(this);
+		}
 	}
 }
