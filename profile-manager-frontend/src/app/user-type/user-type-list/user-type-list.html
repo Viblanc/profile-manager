@@ -1,0 +1,24 @@
+<section class="section-title">
+    <h3>User Types List</h3>
+</section>
+<section class="section-content">
+    <button class="btn" routerLink="add">Add a user type</button>
+
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>User Type</th>
+            <th>Actions</th>
+        </tr>
+        @for (userType of userTypes(); track userType.id) {
+        <tr>
+            <td>{{ userType.id }}</td>
+            <td>{{ userType.name }}</td>
+            <td>
+                <a class="edit-button">Edit</a>
+                <a class="remove-button">Remove</a>
+            </td>
+        </tr>
+        }
+    </table>
+</section>

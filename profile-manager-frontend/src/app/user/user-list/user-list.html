@@ -1,0 +1,28 @@
+<section class="section-title">
+    <h3>User List</h3>
+</section>
+<section class="section-content">
+    <button class="btn" routerLink="add">Add a user</button>
+
+    <table>
+        <tr>
+            <th>User Type</th>
+            <th>Last Name</th>
+            <th>First Name</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+        @for (user of users(); track user.email) {
+        <tr>
+            <td>{{ user.userType }}</td>
+            <td>{{ user.lastName }}</td>
+            <td>{{ user.firstName }}</td>
+            <td>{{ user.email }}</td>
+            <td>
+                <a class="edit-button">Edit</a>
+                <a class="remove-button">Remove</a>
+            </td>
+        </tr>
+        }
+    </table>
+</section>
