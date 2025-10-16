@@ -1,8 +1,9 @@
-import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { Component, computed, DestroyRef, inject, input, OnInit, signal } from '@angular/core';
 import { UserTypeApi } from '../user-type-api';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { notBlank } from '../../shared/custom-validators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-new-user-type',
@@ -10,28 +11,50 @@ import { notBlank } from '../../shared/custom-validators';
   templateUrl: './new-user-type.html',
   styleUrl: './new-user-type.css',
 })
-export class NewUserType {
+export class NewUserType implements OnInit {
   private userTypeApi = inject(UserTypeApi);
   private destroyRef = inject(DestroyRef);
   private formBuilder = inject(FormBuilder);
   private router = inject(Router);
-  userTypes = signal<UserType[]>([]);
+
+  userType = input<UserType>();
+  editMode = computed(() => this.userType() !== undefined);
   errorMessage = signal<string>('');
   form = this.formBuilder.nonNullable.group({
     name: ['', [Validators.required, notBlank]],
   });
+
+  ngOnInit(): void {
+    this.form.patchValue({
+      name: this.userType()?.name,
+    });
+  }
 
   get name() {
     return this.form.get('name')!;
   }
 
   onSubmit(): void {
+    // do not send form if invalid
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
 
-    const subscription = this.userTypeApi.addUserType(this.name.value).subscribe({
+    if (this.editMode()) {
+      this.processRequest(
+        this.userTypeApi.editUserType({
+          id: this.userType()?.id!,
+          name: this.name.value,
+        })
+      );
+    } else {
+      this.processRequest(this.userTypeApi.addUserType(this.name.value));
+    }
+  }
+
+  private processRequest(req: Observable<any>) {
+    const subscription = req.subscribe({
       next: () => {
         this.router.navigateByUrl('user_types');
       },

@@ -3,6 +3,12 @@ import { UserList } from './user/user-list/user-list';
 import { NewUser } from './user/new-user/new-user';
 import { UserTypeList } from './user-type/user-type-list/user-type-list';
 import { NewUserType } from './user-type/new-user-type/new-user-type';
+import {
+  userResolver,
+  usersResolver,
+  userTypeResolver,
+  userTypesResolver,
+} from './shared/resolvers';
 
 export const routes: Routes = [
   {
@@ -12,6 +18,17 @@ export const routes: Routes = [
   {
     path: 'users/add',
     component: NewUser,
+    resolve: {
+      userTypes: userTypesResolver,
+    },
+  },
+  {
+    path: 'users/edit/:id',
+    component: NewUser,
+    resolve: {
+      user: userResolver,
+      userTypes: userTypesResolver,
+    },
   },
   {
     path: 'user_types',
@@ -20,6 +37,13 @@ export const routes: Routes = [
   {
     path: 'user_types/add',
     component: NewUserType,
+  },
+  {
+    path: 'user_types/edit/:id',
+    component: NewUserType,
+    resolve: {
+      userType: userTypeResolver,
+    },
   },
   {
     path: '',

@@ -4,21 +4,31 @@
 <section class="section-content">
     <button class="btn" routerLink="add">Add a user type</button>
 
+    @if (userTypes().length) {
     <table>
         <tr>
-            <th>Id</th>
-            <th>User Type</th>
+            @for (col of sortedColumns; track col) {
+            @let selected = sortedColumn() === col;
+            <th class="clickable-table-heading" (click)="sortUserTypes(col)">
+                {{col | titlecase}} {{selected ? (sortAscending() ? '↓' : '↑') : ''}}
+            </th>
+            }
             <th>Actions</th>
         </tr>
-        @for (userType of userTypes(); track userType.id) {
+        @for (userType of sortedUserTypes(); track userType.id) {
         <tr>
             <td>{{ userType.id }}</td>
             <td>{{ userType.name }}</td>
             <td>
-                <a class="edit-button">Edit</a>
-                <a class="remove-button">Remove</a>
+                <a [routerLink]='["edit", userType.id]' class="edit-button">Edit</a>
+                <a (click)="removeUserType(userType.id)" class="remove-button">Remove</a>
             </td>
         </tr>
         }
     </table>
+    } @else {
+    <div>
+        No user types found.
+    </div>
+    }
 </section>

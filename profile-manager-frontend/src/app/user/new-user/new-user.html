@@ -30,7 +30,6 @@
         </div>
         }
 
-
         <select formControlName="userType">
             @for (userType of userTypes(); track userType.id) {
             <option>{{ userType.name }}</option>
@@ -45,5 +44,11 @@
         }
 
         <button type="submit" class="btn">Create</button>
+
+        @if (errorMessage().length) {
+        <div class="alert">
+            <p>{{ errorMessage() }}</p>
+        </div>
+        }
     </form>
 </section>

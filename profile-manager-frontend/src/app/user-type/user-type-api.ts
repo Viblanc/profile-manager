@@ -11,18 +11,22 @@ export class UserTypeApi {
   private userTypeApiUrl = `${environment.apiUrl}/user_types`;
 
   getUserTypes(): Observable<UserType[]> {
-    return this.http
-      .get<GetUserTypeResponse>(this.userTypeApiUrl)
-      .pipe(map((res) => res._embedded.user_types));
+    return this.http.get<UserType[]>(this.userTypeApiUrl);
+  }
+
+  getUserType(id: string): Observable<UserType> {
+    return this.http.get<UserType>(`${this.userTypeApiUrl}/${id}`);
   }
 
   addUserType(name: string): Observable<any> {
     return this.http.post(this.userTypeApiUrl, { name });
   }
-}
 
-interface GetUserTypeResponse {
-  _embedded: {
-    user_types: UserType[];
-  };
+  editUserType(userType: UserType): Observable<any> {
+    return this.http.put(`${this.userTypeApiUrl}/${userType.id}`, userType);
+  }
+
+  removeUserType(id: number): Observable<any> {
+    return this.http.delete(`${this.userTypeApiUrl}/${id}`);
+  }
 }

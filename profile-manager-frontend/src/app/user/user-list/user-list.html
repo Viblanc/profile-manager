@@ -4,25 +4,34 @@
 <section class="section-content">
     <button class="btn" routerLink="add">Add a user</button>
 
+    @if (users().length) {
     <table>
         <tr>
-            <th>User Type</th>
-            <th>Last Name</th>
-            <th>First Name</th>
-            <th>Email</th>
+            @for (header of tableHeaders; track header.id) {
+            @let selected = sortedColumn() === header.id;
+            <th (click)="sortUsers(header.id)" class="clickable-table-heading">
+                {{ header.title }} {{selected ? (sortAscending() ? '↓' : '↑') : ''}}
+            </th>
+            }
             <th>Actions</th>
         </tr>
-        @for (user of users(); track user.email) {
+        @for (user of sortedUsers(); track user.email) {
         <tr>
             <td>{{ user.userType }}</td>
             <td>{{ user.lastName }}</td>
             <td>{{ user.firstName }}</td>
             <td>{{ user.email }}</td>
             <td>
-                <a class="edit-button">Edit</a>
-                <a class="remove-button">Remove</a>
+                <a [routerLink]='["edit", user.id]' class="edit-button">Edit</a>
+                <a (click)="removeUser(user.id!)" class="remove-button">Remove</a>
             </td>
         </tr>
         }
     </table>
+    } @else {
+    <div>
+        No users found.
+    </div>
+    }
+
 </section>

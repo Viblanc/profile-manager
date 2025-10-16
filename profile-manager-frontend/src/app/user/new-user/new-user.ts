@@ -1,9 +1,9 @@
-import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
-import { UserTypeApi } from '../../user-type/user-type-api';
+import { Component, computed, DestroyRef, inject, input, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserApi } from '../user-api';
 import { notBlank } from '../../shared/custom-validators';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-new-user',
@@ -13,11 +13,14 @@ import { Router } from '@angular/router';
 })
 export class NewUser implements OnInit {
   private userApi = inject(UserApi);
-  private userTypeApi = inject(UserTypeApi);
   private destroyRef = inject(DestroyRef);
   private formBuilder = inject(FormBuilder);
   private router = inject(Router);
-  userTypes = signal<UserType[]>([]);
+
+  user = input<User>();
+  editMode = computed(() => this.user() !== undefined);
+  userTypes = input.required<UserType[]>();
+  errorMessage = signal<string>('');
   form = this.formBuilder.nonNullable.group({
     lastName: ['', [Validators.required, notBlank]],
     firstName: ['', [Validators.required, notBlank]],
@@ -26,22 +29,16 @@ export class NewUser implements OnInit {
   });
 
   ngOnInit(): void {
-    const subscription = this.userTypeApi.getUserTypes().subscribe({
-      next: (userTypes) => {
-        this.userTypes.set(userTypes);
-
-        if (userTypes.length !== 0) {
-          this.userType.setValue(userTypes[0].name);
-        }
-      },
-      error: (err) => {
-        console.error(err);
-      },
-    });
-
-    this.destroyRef.onDestroy(() => {
-      subscription.unsubscribe();
-    });
+    // pre-populate form fields
+    if (this.editMode()) {
+      this.form.patchValue({
+        ...this.user(),
+      });
+    } else {
+      this.form.patchValue({
+        userType: this.userTypes()[0].name,
+      });
+    }
   }
 
   get lastName() {
@@ -61,6 +58,7 @@ export class NewUser implements OnInit {
   }
 
   onSubmit() {
+    // do not send form if invalid
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -68,17 +66,27 @@ export class NewUser implements OnInit {
 
     // create new user
     const user: User = {
+      id: this.user()?.id,
       firstName: this.firstName.value,
       lastName: this.lastName.value,
       email: this.email.value,
       userType: this.userType.value,
     };
 
-    const subscription = this.userApi.addUser(user).subscribe({
+    if (this.editMode()) {
+      this.processRequest(this.userApi.editUser(user));
+    } else {
+      this.processRequest(this.userApi.addUser(user));
+    }
+  }
+
+  private processRequest(req: Observable<any>) {
+    const subscription = req.subscribe({
       next: () => {
-        this.router.navigateByUrl('/users');
+        this.router.navigateByUrl('users');
       },
       error: (err) => {
+        this.errorMessage.set(err.error.message);
         console.error(err);
       },
     });
