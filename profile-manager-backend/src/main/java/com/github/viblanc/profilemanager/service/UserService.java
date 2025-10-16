@@ -1,7 +1,8 @@
 package com.github.viblanc.profilemanager.service;
 
 import com.github.viblanc.profilemanager.dto.UserDto;
+import com.github.viblanc.profilemanager.entity.User;
 
 public interface UserService {
-	UserDto addUser(UserDto userDto);
+	User addUser(UserDto userDto);
 }

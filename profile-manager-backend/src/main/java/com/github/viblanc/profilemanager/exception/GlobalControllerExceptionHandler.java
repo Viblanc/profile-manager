@@ -10,9 +10,26 @@ import com.github.viblanc.profilemanager.dto.ErrorResponse;
 @ControllerAdvice
 public class GlobalControllerExceptionHandler {
 	@ExceptionHandler
-	public ResponseEntity<ErrorResponse> handleException(UserTypeNotFoundException exception) {
-		ErrorResponse response = new ErrorResponse(HttpStatus.NOT_FOUND.value(), exception.getMessage(), System.currentTimeMillis());
-		
+	public ResponseEntity<ErrorResponse> handleNotFoundException(UserTypeNotFoundException exception) {
+		ErrorResponse response = new ErrorResponse(HttpStatus.NOT_FOUND.value(), exception.getMessage(),
+				System.currentTimeMillis());
+
 		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler
+	public ResponseEntity<ErrorResponse> handleAlreadyExistsException(UserTypeAlreadyExistsException exception) {
+		ErrorResponse response = new ErrorResponse(HttpStatus.CONFLICT.value(), exception.getMessage(),
+				System.currentTimeMillis());
+
+		return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ErrorResponse> handleAlreadyExistsException(EmailAlreadyExistsException exception) {
+		ErrorResponse response = new ErrorResponse(HttpStatus.CONFLICT.value(), exception.getMessage(),
+				System.currentTimeMillis());
+
+		return new ResponseEntity<>(response, HttpStatus.CONFLICT);
 	}
 }

@@ -1,5 +1,6 @@
 package com.github.viblanc.profilemanager.controller;
 
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.viblanc.profilemanager.dto.UserDto;
+import com.github.viblanc.profilemanager.entity.User;
 import com.github.viblanc.profilemanager.service.UserService;
 
 @RestController
@@ -20,9 +22,10 @@ public class UserController {
 	}
 	
 	@PostMapping("/add")
-	public ResponseEntity<UserDto> addUser(@RequestBody UserDto userDto) {
-		UserDto addedUser = userService.addUser(userDto);
+	public ResponseEntity<?> addUser(@RequestBody UserDto userDto) {
+		User addedUser = userService.addUser(userDto);
+		EntityModel<User> resource = EntityModel.of(addedUser);
 		
-		return new ResponseEntity<>(addedUser, HttpStatus.OK);
+		return ResponseEntity.status(HttpStatus.CREATED).body(resource);
 	}
 }
