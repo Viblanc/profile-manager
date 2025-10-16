@@ -1,0 +1,53 @@
+nav {
+  display: flex;
+  align-items: center;
+  height: 5vh;
+  background-color: white;
+}
+
+.logo-container {
+  width: 150px;
+  height: 100%;
+  margin-right: 50px;
+}
+
+.logo-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+nav a {
+  position: relative;
+  text-decoration: none;
+  padding: 0 50px;
+  margin: 0 50px;
+  color: black;
+  font-weight: bold;
+}
+
+nav a::before {
+  content: "";
+  position: absolute;
+  height: 3px;
+  width: 0;
+  background-color: #890e54ff;
+  right: 0;
+}
+
+nav a::before {
+  top: -20px;
+}
+
+nav a::after {
+  bottom: -20px;
+}
+
+nav a:hover::before {
+  width: 100%;
+  transition: 0.5s;
+}
+
+.active-link::before {
+  width: 100% !important;
+}
