@@ -8,7 +8,9 @@ import com.github.viblanc.profilemanager.dto.UserDto;
 import com.github.viblanc.profilemanager.entity.User;
 import com.github.viblanc.profilemanager.entity.UserType;
 import com.github.viblanc.profilemanager.exception.EmailAlreadyExistsException;
+import com.github.viblanc.profilemanager.exception.UserNotFoundException;
 import com.github.viblanc.profilemanager.exception.UserTypeNotFoundException;
+import com.github.viblanc.profilemanager.mappers.UserMapper;
 import com.github.viblanc.profilemanager.repository.UserRepository;
 import com.github.viblanc.profilemanager.repository.UserTypeRepository;
 
@@ -16,34 +18,42 @@ import com.github.viblanc.profilemanager.repository.UserTypeRepository;
 public class UserServiceImpl implements UserService {
 	private final UserRepository userRepository;
 	private final UserTypeRepository userTypeRepository;
+	private final UserMapper mapper;
 
-	public UserServiceImpl(UserRepository userRepository, UserTypeRepository userTypeRepository) {
+	public UserServiceImpl(UserRepository userRepository, UserTypeRepository userTypeRepository, UserMapper mapper) {
 		this.userRepository = userRepository;
 		this.userTypeRepository = userTypeRepository;
+		this.mapper = mapper;
 	}
 
 	@Override
 	public List<UserDto> findAll() {
 		List<User> users = userRepository.findAll();
 
-		return users.stream().map(user -> new UserDto(user.getFirstName(), user.getLastName(), user.getEmail(),
-				user.getUserType().getName())).toList();
+		return users.stream().map(mapper::toDto).toList();
+	}
+	
+	@Override
+	public UserDto getUser(Long id) {
+		User user = userRepository.findById(id)
+				.orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
+		
+		return mapper.toDto(user);
 	}
 
 	@Override
-	public User addUser(UserDto userDto) {
+	public UserDto addUser(UserDto userDto) {
 		// throw exception if user with same email address already exists
 		userRepository.findByEmail(userDto.email()).ifPresent(u -> {
 			throw new EmailAlreadyExistsException("User with email " + userDto.email() + " already exists.");
 		});
 
-		// create user from dto
-		User user = User.build().firstName(userDto.firstName()).lastName(userDto.lastName()).email(userDto.email())
-				.build();
-
 		// retrieve user type, throw exception if it does not exist
 		UserType userType = userTypeRepository.findByName(userDto.userType()).orElseThrow(
 				() -> new UserTypeNotFoundException("User type " + userDto.userType() + " does not exist"));
+
+		// create user from dto
+		User user = mapper.toUser(userDto);
 
 		// add user to the user type
 		userType.addUser(user);
@@ -52,6 +62,42 @@ public class UserServiceImpl implements UserService {
 		userRepository.save(user);
 		userTypeRepository.save(userType);
 
-		return user;
+		return mapper.toDto(user);
+	}
+
+	@Override
+	public UserDto editUser(Long id, UserDto userDto) {
+		User user = userRepository.findById(id)
+				.orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
+
+		// check if email is available
+		if (!user.getEmail().equals(userDto.email()) && userRepository.findByEmail(userDto.email()).isPresent()) {
+			throw new EmailAlreadyExistsException("User with email " + userDto.email() + " already exists.");
+		}
+
+		// check if user type exists
+		UserType userType = userTypeRepository.findByName(userDto.userType()).orElseThrow(
+				() -> new UserTypeNotFoundException("User type " + userDto.userType() + " does not exist"));
+
+		// remove old user type
+		UserType oldUserType = user.getUserType();
+		oldUserType.removeUser(user);
+		userTypeRepository.save(oldUserType);
+
+		// replace old data with new data
+		user.setFirstName(userDto.firstName());
+		user.setLastName(userDto.lastName());
+		user.setEmail(userDto.email());
+		userType.addUser(user);
+
+		userTypeRepository.save(userType);
+		userRepository.save(user);
+
+		return mapper.toDto(user);
+	}
+
+	@Override
+	public void removeUser(Long id) {
+		userRepository.deleteById(id);
 	}
 }

@@ -38,7 +38,7 @@ public class UserType {
 		return name;
 	}
 
-	public void getName(String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
@@ -58,6 +58,17 @@ public class UserType {
 
 			this.users.add(user);
 			user.setUserType(this);
+		}
+	}
+	
+	public void removeUser(User user) {
+		if (Objects.nonNull(user)) {
+			if (Objects.isNull(this.users)) {
+				return;
+			}
+
+			this.users.remove(user);
+			user.setUserType(null);
 		}
 	}
 }
