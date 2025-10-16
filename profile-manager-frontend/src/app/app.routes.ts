@@ -9,11 +9,19 @@ import {
   userTypeResolver,
   userTypesResolver,
 } from './shared/resolvers';
+import { UserProfile } from './user/user-profile/user-profile';
 
 export const routes: Routes = [
   {
     path: 'users',
     component: UserList,
+  },
+  {
+    path: 'users/:id',
+    component: UserProfile,
+    resolve: {
+      user: userResolver,
+    },
   },
   {
     path: 'users/add',

@@ -1,0 +1,11 @@
+<section class="section-title">
+    <h3>{{ user().firstName }} {{ user().lastName }}'s Profile</h3>
+</section>
+<section class="section-content">
+    <ul class="profile">
+        <li>Last Name: {{ user().lastName }}</li>
+        <li>First Name: {{ user().firstName }}</li>
+        <li>Email: {{ user().email }}</li>
+        <li>Type: {{ user().userType }}</li>
+    </ul>
+</section>
