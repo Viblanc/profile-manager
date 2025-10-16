@@ -1,34 +1,42 @@
-<section class="section-title">
-    <h3>User Types List</h3>
-</section>
-<section class="section-content">
-    <button class="btn" routerLink="add">Add a user type</button>
+<div class="title">
+    <h1>User Types List</h1>
+</div>
+<div class="container w-80">
+    <div class="text-center">
+        <button class="big-button" routerLink="add">Add a user type</button>
+    </div>
 
     @if (userTypes().length) {
-    <table>
-        <tr>
-            @for (col of sortedColumns; track col) {
-            @let selected = sortedColumn() === col;
-            <th class="clickable-table-heading" (click)="sortUserTypes(col)">
-                {{col | titlecase}} {{selected ? (sortAscending() ? '↓' : '↑') : ''}}
-            </th>
+    <table id="my-table" class="table table-bordered text-center border-black my-table">
+        <thead>
+            <tr>
+                @for (col of sortedColumns; track col) {
+                @let selected = sortedColumn() === col;
+                <th class="clickable-table-heading" (click)="sortUserTypes(col)">
+                    {{col | titlecase}} {{selected ? (sortAscending() ? '↓' : '↑') : ''}}
+                </th>
+                }
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (userType of sortedUserTypes(); track userType.id) {
+            <tr>
+                <td>{{ userType.id }}</td>
+                <td>{{ userType.name }}</td>
+                <td>
+                    <div class="d-inline-flex gap-1">
+                        <a [routerLink]='["edit", userType.id]' class="btn btn-lg btn-warning">Edit</a>
+                        <a (click)="removeUserType(userType.id)" class="btn btn-lg btn-danger">Remove</a>
+                    </div>
+                </td>
+            </tr>
             }
-            <th>Actions</th>
-        </tr>
-        @for (userType of sortedUserTypes(); track userType.id) {
-        <tr>
-            <td>{{ userType.id }}</td>
-            <td>{{ userType.name }}</td>
-            <td>
-                <a [routerLink]='["edit", userType.id]' class="edit-button">Edit</a>
-                <a (click)="removeUserType(userType.id)" class="remove-button">Remove</a>
-            </td>
-        </tr>
-        }
+        </tbody>
     </table>
     } @else {
-    <div>
+    <div class="alert alert-warning">
         No user types found.
     </div>
     }
-</section>
+</div>

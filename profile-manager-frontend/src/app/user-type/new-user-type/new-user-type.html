@@ -1,22 +1,24 @@
-<section class="section-title">
-    <h3>Add / Edit a user type</h3>
-</section>
+<div class="title">
+    <h1>Add / Edit a user type</h1>
+</div>
 <section class="section-content">
     <form (ngSubmit)="onSubmit()" [formGroup]="form">
-        <input type="text" placeholder="User Type Name" formControlName="name" />
+        <input class="form-control" type="text" placeholder="User Type Name" formControlName="name" />
         @if (name.invalid && (name.dirty || name.touched)) {
-        <div class="alert">
+        <div class="error-message bg-danger-subtle text-danger-emphasis">
             @if (name.hasError('required') || name.hasError('isBlank')) {
-            <p>User type name is required.</p>
+            User type name is required.
+            } @else {
+            An error has occurred.
             }
         </div>
         }
 
-        <button type="submit" class="btn">Create</button>
+        <button type="submit" class="big-button">{{ editMode() ? 'Update' : 'Create'}}</button>
 
         @if (errorMessage().length) {
-        <div class="alert">
-            <p>{{ errorMessage() }}</p>
+        <div class="error-message bg-danger-subtle text-danger-emphasis">
+            {{ errorMessage() }}
         </div>
         }
     </form>

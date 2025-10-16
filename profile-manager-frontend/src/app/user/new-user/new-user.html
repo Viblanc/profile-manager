@@ -1,53 +1,53 @@
-<section class="section-title">
-    <h3>Add / Edit a user</h3>
-</section>
+<div class="title">
+    <h1>Add / Edit a user</h1>
+</div>
 <section class="section-content">
     <form (ngSubmit)="onSubmit()" [formGroup]="form">
-        <input type="text" placeholder="Last Name" formControlName="lastName" />
+        <input class="form-control" type="text" placeholder="Last Name" formControlName="lastName" />
         @if (lastName.invalid && (lastName.dirty || lastName.touched)) {
-        <div class="alert">
+        <div class="error-message bg-danger-subtle text-danger-emphasis">
             @if (lastName.hasError('required') || lastName.hasError('isBlank')) {
-            <p>Last name is required.</p>
+            Last name is required.
             }
         </div>
         }
 
-        <input type="text" placeholder="First Name" formControlName="firstName" />
+        <input class="form-control" type="text" placeholder="First Name" formControlName="firstName" />
         @if (firstName.invalid && (firstName.dirty || firstName.touched)) {
-        <div class="alert">
+        <div class="error-message bg-danger-subtle text-danger-emphasis">
             @if (firstName.hasError('required') || firstName.hasError('isBlank')) {
-            <p>First name is required.</p>
+            First name is required.
             }
         </div>
         }
 
-        <input type="text" placeholder="Email" formControlName="email" />
+        <input class="form-control" type="text" placeholder="Email" formControlName="email" />
         @if (email.invalid && (email.dirty || email.touched)) {
-        <div class="alert">
+        <div class="error-message bg-danger-subtle text-danger-emphasis">
             @if (email.hasError('pattern')) {
-            <p>Email must follow the pattern: [name]@[provider].[domain]</p>
+            Email must follow the pattern: [name]@[provider].[domain]
             }
         </div>
         }
 
-        <select formControlName="userType">
+        <select class="form-select" formControlName="userType">
             @for (userType of userTypes(); track userType.id) {
             <option>{{ userType.name }}</option>
             }
         </select>
         @if (userType.invalid && (userType.dirty || userType.touched)) {
-        <div class="alert">
+        <div class="error-message bg-danger-subtle text-danger-emphasis">
             @if (userType.hasError('required')) {
-            <p>User type is required.</p>
+            User type is required.
             }
         </div>
         }
 
-        <button type="submit" class="btn">Create</button>
+        <button type="submit" class="big-button">{{ editMode() ? 'Update' : 'Create'}}</button>
 
         @if (errorMessage().length) {
-        <div class="alert">
-            <p>{{ errorMessage() }}</p>
+        <div class="error-message bg-danger-subtle text-danger-emphasis">
+            {{ errorMessage() }}
         </div>
         }
     </form>

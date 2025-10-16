@@ -1,112 +1,51 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Oswald:wght@200..700&family=Roboto:ital,wght@0,100..900;1,100..900&family=Rouge+Script&display=swap');
+* {
+  box-sizing: border-box;
+}
 
 body {
-  /* color: #890e54ff; red
-    color: #708090ff; 
-    color: #80a9beff; */
-  font-family: 'Noto Sans', sans-serif;
-  font-size: 18px;
-  margin: 0;
-  background-color: #f3f3f3ff;
+  background-color: #f3f3f3ff !important;
 }
 
-.section-title {
+.title {
   color: white;
   background-color: #708090ff;
-}
-
-.section-title h3 {
   text-align: center;
-  font-size: 32px;
-  padding: 10px 0;
-  margin: 0;
+  padding: 1rem 0;
 }
 
-.section-content {
-  text-align: center;
-}
-
-.btn {
+.big-button {
   background-color: #890e54ff;
   color: white;
   border: none;
   border-radius: 4px;
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: bold;
-  margin: 50px 0;
+  margin: 3rem 0;
   padding: 2px 8px;
   transition: 0.3s ease-in-out;
   cursor: pointer;
 }
 
-.btn:hover {
+.big-button:hover {
   scale: 1.05;
 }
 
-.section-content table,
-td,
-th {
-  border: 1px solid;
-  border-color: black;
-  padding: 10px 100px;
-  text-align: center;
+#my-table {
+  font-size: 1.5rem;
 }
 
-.section-content th {
+#my-table th {
   background-color: #890e54ff;
   color: white;
-  /* padding: 10px 100px; */
-}
-
-.section-content td {
-  background-color: white;
-}
-
-.section-content table {
-  font-size: 24px;
-  margin: 0 auto;
-  border-collapse: collapse;
-}
-
-.clickable-table-heading {
   cursor: pointer;
 }
 
-.view-button {
-  background-color: #8b4eaa;
-  padding: 0 10px;
-  margin: 0 2px;
-  color: white;
-  border: none;
+.btn {
+  font-weight: bold !important;
+}
+
+.error-message {
+  font-size: 1.5rem;
+  padding: 5px;
   border-radius: 4px;
-  font-size: 24px;
-  font-weight: bold;
-  cursor: pointer;
-  text-decoration: none;
-}
-
-.edit-button {
-  background-color: #7fa8be;
-  padding: 0 10px;
-  margin: 0 2px;
-  color: black;
-  border: none;
-  border-radius: 4px;
-  font-size: 24px;
-  font-weight: bold;
-  cursor: pointer;
-  text-decoration: none;
-}
-
-.remove-button {
-  background-color: #9a0000;
-  padding: 0 10px;
-  margin: 0 2px;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 24px;
-  font-weight: bold;
-  cursor: pointer;
-  text-decoration: none;
 }

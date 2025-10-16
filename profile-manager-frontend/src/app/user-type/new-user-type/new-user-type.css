@@ -1,15 +1,14 @@
 form {
-  margin: 50px 0;
+  margin: 3rem 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-input[type='text'],
-select {
+input[type='text'] {
   width: 20vw;
-  font-size: 24px;
+  font-size: 1.5rem;
   text-align: center;
   background-color: white;
   border: 2px solid #890e54ff;
@@ -18,19 +17,6 @@ select {
 }
 
 button[type='submit'] {
-  width: 20vw !important;
-}
-
-.alert {
+  font-size: 1.5rem;
   width: 20vw;
-  padding: 10px 0;
-  color: white;
-  background-color: #dc3545;
-  border-radius: 4px;
-  text-align: left;
-}
-
-.alert p {
-  margin: 0;
-  padding: 0 10px;
 }

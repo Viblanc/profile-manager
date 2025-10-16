@@ -12,14 +12,6 @@ export const userResolver: ResolveFn<User> = (
   return userApi.getUser(userId);
 };
 
-export const usersResolver: ResolveFn<User[]> = (
-  _route: ActivatedRouteSnapshot,
-  _state: RouterStateSnapshot
-) => {
-  const userApi = inject(UserApi);
-  return userApi.getUsers();
-};
-
 export const userTypeResolver: ResolveFn<UserType> = (
   route: ActivatedRouteSnapshot,
   _state: RouterStateSnapshot

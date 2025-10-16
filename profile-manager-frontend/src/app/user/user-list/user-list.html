@@ -1,38 +1,46 @@
-<section class="section-title">
-    <h3>User List</h3>
-</section>
-<section class="section-content">
-    <button class="btn" routerLink="add">Add a user</button>
+<div class="title">
+    <h1>User List</h1>
+</div>
+<div class="container w-80">
+    <div class="text-center">
+        <button class="big-button" routerLink="add">Add a user</button>
+    </div>
 
     @if (users().length) {
-    <table>
-        <tr>
-            @for (header of tableHeaders; track header.id) {
-            @let selected = sortedColumn() === header.id;
-            <th (click)="sortUsers(header.id)" class="clickable-table-heading">
-                {{ header.title }} {{selected ? (sortAscending() ? '↓' : '↑') : ''}}
-            </th>
+    <table id="my-table" class="table table-bordered text-center border-black my-table">
+        <thead>
+            <tr>
+                @for (header of tableHeaders; track header.id) {
+                @let selected = sortedColumn() === header.id;
+                <th (click)="sortUsers(header.id)" class="table-bordered clickable-table-heading">
+                    {{ header.title }} {{selected ? (sortAscending() ? '↓' : '↑') : ''}}
+                </th>
+                }
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (user of sortedUsers(); track user.email) {
+            <tr>
+                <td>{{ user.userType }}</td>
+                <td>{{ user.lastName }}</td>
+                <td>{{ user.firstName }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                    <div class="d-inline-flex gap-1">
+                        <a [routerLink]='[user.id]' class="btn btn-lg btn-success">View Profile</a>
+                        <a [routerLink]='["edit", user.id]' class="btn btn-lg btn-warning">Edit</a>
+                        <a (click)="removeUser(user.id!)" class="btn btn-lg btn-danger">Remove</a>
+                    </div>
+
+                </td>
+            </tr>
             }
-            <th>Actions</th>
-        </tr>
-        @for (user of sortedUsers(); track user.email) {
-        <tr>
-            <td>{{ user.userType }}</td>
-            <td>{{ user.lastName }}</td>
-            <td>{{ user.firstName }}</td>
-            <td>{{ user.email }}</td>
-            <td>
-                <a [routerLink]='[user.id]' class="view-button">View Profile</a>
-                <a [routerLink]='["edit", user.id]' class="edit-button">Edit</a>
-                <a (click)="removeUser(user.id!)" class="remove-button">Remove</a>
-            </td>
-        </tr>
-        }
+        </tbody>
     </table>
     } @else {
-    <div>
+    <div class="alert alert-warning">
         No users found.
     </div>
     }
-
-</section>
+</div>

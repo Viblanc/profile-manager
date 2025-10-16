@@ -1,11 +1,38 @@
-<section class="section-title">
-    <h3>{{ user().firstName }} {{ user().lastName }}'s Profile</h3>
-</section>
+<div class="title">
+    <h1>{{ user().firstName }} {{ user().lastName }}'s Profile</h1>
+</div>
 <section class="section-content">
-    <ul class="profile">
-        <li>Last Name: {{ user().lastName }}</li>
-        <li>First Name: {{ user().firstName }}</li>
-        <li>Email: {{ user().email }}</li>
-        <li>Type: {{ user().userType }}</li>
+    <ul class="profile-info list-group">
+        <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto">
+                <div class="fw-bold">Last Name</div>
+                {{ user().lastName }}
+            </div>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto">
+                <div class="fw-bold">First Name</div>
+                {{ user().firstName }}
+            </div>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto">
+                <div class="fw-bold">Email Address</div>
+                {{ user().email }}
+            </div>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto">
+                <div class="fw-bold">User Type</div>
+                {{ user().userType }}
+            </div>
+        </li>
     </ul>
+
+    <div class="text-center">
+        <div class="btn-group my-4" role="group">
+            <button [routerLink]='["../edit", user().id]' class="btn btn-lg btn-warning">Edit</button>
+            <button (click)="this.deleteUser()" class="btn btn-lg btn-danger">Delete</button>
+        </div>
+    </div>
 </section>
