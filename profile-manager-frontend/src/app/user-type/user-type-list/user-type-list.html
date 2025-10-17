@@ -10,10 +10,10 @@
     <table id="my-table" class="table table-bordered text-center border-black my-table">
         <thead>
             <tr>
-                @for (col of sortedColumns; track col) {
-                @let selected = sortedColumn() === col;
-                <th class="clickable-table-heading" (click)="sortUserTypes(col)">
-                    {{col | titlecase}} {{selected ? (sortAscending() ? '↓' : '↑') : ''}}
+                @for (header of tableHeaders; track header.id) {
+                @let selected = sortedColumn() === header.id;
+                <th (click)="sortUserTypes(header.id)" class="table-bordered clickable-table-heading">
+                    {{ header.title }} {{selected ? (sortAscending() ? '↓' : '↑') : ''}}
                 </th>
                 }
                 <th>Actions</th>

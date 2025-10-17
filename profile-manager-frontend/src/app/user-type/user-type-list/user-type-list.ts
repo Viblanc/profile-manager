@@ -1,21 +1,17 @@
 import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
 import { UserTypeApi } from '../user-type-api';
 import { RouterLink } from '@angular/router';
-import { TitleCasePipe } from '@angular/common';
-
-const sortedColumns = ['id', 'name'] as const;
-type SortedColumn = (typeof sortedColumns)[number];
 
 @Component({
   selector: 'app-user-type-list',
-  imports: [RouterLink, TitleCasePipe],
+  imports: [RouterLink],
   templateUrl: './user-type-list.html',
   styleUrl: './user-type-list.css',
 })
 export class UserTypeList {
   private userTypeApi = inject(UserTypeApi);
   private destroyRef = inject(DestroyRef);
-  sortedColumns = sortedColumns;
+  sortedColumns = columns;
   userTypes = signal<UserType[]>([]);
   sortedUserTypes = computed(() => {
     const sortedCol = this.sortedColumn();
@@ -27,7 +23,17 @@ export class UserTypeList {
       }
     });
   });
-  sortedColumn = signal<SortedColumn>('id');
+  tableHeaders: TableHeader[] = [
+    {
+      id: 'id',
+      title: 'Id',
+    },
+    {
+      id: 'name',
+      title: 'Type Name',
+    },
+  ];
+  sortedColumn = signal<Column>('id');
   sortAscending = signal<boolean>(true);
 
   ngOnInit(): void {
@@ -45,7 +51,7 @@ export class UserTypeList {
     });
   }
 
-  sortUserTypes(column: SortedColumn) {
+  sortUserTypes(column: Column) {
     if (column === this.sortedColumn()) {
       this.sortAscending.set(!this.sortAscending());
     } else {
@@ -62,4 +68,12 @@ export class UserTypeList {
       subscription.unsubscribe();
     });
   }
+}
+
+const columns = ['id', 'name'] as const;
+type Column = (typeof columns)[number];
+
+interface TableHeader {
+  id: Column;
+  title: string;
 }
