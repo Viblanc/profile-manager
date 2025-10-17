@@ -79,11 +79,6 @@ public class UserServiceImpl implements UserService {
 		UserType userType = userTypeRepository.findByName(userDto.userType().name()).orElseThrow(
 				() -> new UserTypeNotFoundException("User type " + userDto.userType() + " does not exist"));
 
-		// remove old user type
-		UserType oldUserType = user.getUserType();
-		oldUserType.removeUser(user);
-		userTypeRepository.save(oldUserType);
-
 		// replace old data with new data
 		user.setFirstName(userDto.firstName());
 		user.setLastName(userDto.lastName());

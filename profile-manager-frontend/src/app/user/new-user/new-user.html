@@ -32,7 +32,7 @@
 
         <select class="form-select" formControlName="userType">
             @for (userType of userTypes(); track userType.id) {
-            <option>{{ userType.name }}</option>
+            <option [value]="userType.name">{{ userType.name }}</option>
             }
         </select>
         @if (userType.invalid && (userType.dirty || userType.touched)) {
