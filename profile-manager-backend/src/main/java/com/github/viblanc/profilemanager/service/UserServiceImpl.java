@@ -16,8 +16,11 @@ import com.github.viblanc.profilemanager.repository.UserTypeRepository;
 
 @Service
 public class UserServiceImpl implements UserService {
+
 	private final UserRepository userRepository;
+
 	private final UserTypeRepository userTypeRepository;
+
 	private final UserMapper mapper;
 
 	public UserServiceImpl(UserRepository userRepository, UserTypeRepository userTypeRepository, UserMapper mapper) {
@@ -32,12 +35,12 @@ public class UserServiceImpl implements UserService {
 
 		return users.stream().map(mapper::toDto).toList();
 	}
-	
+
 	@Override
 	public UserDto getUser(Long id) {
 		User user = userRepository.findById(id)
-				.orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
-		
+			.orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
+
 		return mapper.toDto(user);
 	}
 
@@ -49,8 +52,8 @@ public class UserServiceImpl implements UserService {
 		});
 
 		// retrieve user type, throw exception if it does not exist
-		UserType userType = userTypeRepository.findByName(userDto.userType().name()).orElseThrow(
-				() -> new UserTypeNotFoundException("User type " + userDto.userType() + " does not exist"));
+		UserType userType = userTypeRepository.findByName(userDto.userType().name())
+			.orElseThrow(() -> new UserTypeNotFoundException("User type " + userDto.userType() + " does not exist"));
 
 		// create user from dto
 		User user = mapper.toUser(userDto);
@@ -68,7 +71,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserDto editUser(Long id, UserDto userDto) {
 		User user = userRepository.findById(id)
-				.orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
+			.orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
 
 		// check if email is available
 		if (!user.getEmail().equals(userDto.email()) && userRepository.findByEmail(userDto.email()).isPresent()) {
@@ -76,8 +79,8 @@ public class UserServiceImpl implements UserService {
 		}
 
 		// check if user type exists
-		UserType userType = userTypeRepository.findByName(userDto.userType().name()).orElseThrow(
-				() -> new UserTypeNotFoundException("User type " + userDto.userType() + " does not exist"));
+		UserType userType = userTypeRepository.findByName(userDto.userType().name())
+			.orElseThrow(() -> new UserTypeNotFoundException("User type " + userDto.userType() + " does not exist"));
 
 		// replace old data with new data
 		user.setFirstName(userDto.firstName());
@@ -95,4 +98,5 @@ public class UserServiceImpl implements UserService {
 	public void removeUser(Long id) {
 		userRepository.deleteById(id);
 	}
+
 }

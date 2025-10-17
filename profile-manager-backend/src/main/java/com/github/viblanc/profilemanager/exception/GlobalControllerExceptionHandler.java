@@ -9,6 +9,7 @@ import com.github.viblanc.profilemanager.dto.ErrorResponse;
 
 @ControllerAdvice
 public class GlobalControllerExceptionHandler {
+
 	@ExceptionHandler
 	public ResponseEntity<ErrorResponse> handleNotFoundException(UserTypeNotFoundException exception) {
 		ErrorResponse response = new ErrorResponse(HttpStatus.NOT_FOUND.value(), exception.getMessage(),
@@ -24,7 +25,7 @@ public class GlobalControllerExceptionHandler {
 
 		return new ResponseEntity<>(response, HttpStatus.CONFLICT);
 	}
-	
+
 	@ExceptionHandler
 	public ResponseEntity<ErrorResponse> handleAlreadyExistsException(EmailAlreadyExistsException exception) {
 		ErrorResponse response = new ErrorResponse(HttpStatus.CONFLICT.value(), exception.getMessage(),
@@ -32,4 +33,5 @@ public class GlobalControllerExceptionHandler {
 
 		return new ResponseEntity<>(response, HttpStatus.CONFLICT);
 	}
+
 }

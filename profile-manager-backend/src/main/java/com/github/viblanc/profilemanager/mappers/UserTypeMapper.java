@@ -8,8 +8,11 @@ import com.github.viblanc.profilemanager.entity.UserType;
 
 @Mapper(componentModel = "spring")
 public interface UserTypeMapper {
+
 	UserTypeMapper INSTANCE = Mappers.getMapper(UserTypeMapper.class);
-	
+
 	UserTypeDto toDto(UserType userType);
+
 	UserType toUserType(UserTypeDto dto);
+
 }

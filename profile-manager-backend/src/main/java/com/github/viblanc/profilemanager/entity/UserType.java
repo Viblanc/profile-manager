@@ -16,6 +16,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "user_type")
 public class UserType {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -25,6 +26,15 @@ public class UserType {
 
 	@OneToMany(mappedBy = "userType", cascade = CascadeType.ALL)
 	private Set<User> users;
+
+	public UserType() {
+	}
+
+	public UserType(Long id, String name, Set<User> users) {
+		this.id = id;
+		this.name = name;
+		this.users = users;
+	}
 
 	public Long getId() {
 		return id;
@@ -60,7 +70,7 @@ public class UserType {
 			user.setUserType(this);
 		}
 	}
-	
+
 	public void removeUser(User user) {
 		if (Objects.nonNull(user)) {
 			if (Objects.isNull(this.users)) {
@@ -71,4 +81,5 @@ public class UserType {
 			user.setUserType(null);
 		}
 	}
+
 }

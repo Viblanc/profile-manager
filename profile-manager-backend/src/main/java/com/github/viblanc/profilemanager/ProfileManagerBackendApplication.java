@@ -9,6 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
 public class ProfileManagerBackendApplication {
+
 	@Value("${allowed.origins}")
 	private String[] allowedOrigins;
 
@@ -25,4 +26,5 @@ public class ProfileManagerBackendApplication {
 			}
 		};
 	}
+
 }
