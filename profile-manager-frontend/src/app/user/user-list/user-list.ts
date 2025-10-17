@@ -14,10 +14,12 @@ export class UserList implements OnInit {
   users = signal<User[]>([]);
   sortedUsers = computed(() =>
     this.users().sort((a, b) => {
+      const compareFn: (a: any, b: any) => 1 | -1 =
+        this.sortedColumn() === 'userType' ? compareUserTypes : compare;
       if (this.sortAscending()) {
-        return a[this.sortedColumn()] < b[this.sortedColumn()] ? -1 : 1;
+        return compareFn(a[this.sortedColumn()], b[this.sortedColumn()]);
       } else {
-        return a[this.sortedColumn()] < b[this.sortedColumn()] ? 1 : -1;
+        return compareFn(b[this.sortedColumn()], a[this.sortedColumn()]);
       }
     })
   );
@@ -75,7 +77,11 @@ export class UserList implements OnInit {
   }
 }
 
-type Column = 'userType' | 'lastName' | 'firstName' | 'email';
+const compare = (a: string, b: string) => (a < b ? -1 : 1);
+const compareUserTypes = (a: UserType, b: UserType) => compare(a.name, b.name);
+
+const sortedColumns = ['userType', 'lastName', 'firstName', 'email'] as const;
+type Column = (typeof sortedColumns)[number];
 
 interface TableHeader {
   id: Column;
