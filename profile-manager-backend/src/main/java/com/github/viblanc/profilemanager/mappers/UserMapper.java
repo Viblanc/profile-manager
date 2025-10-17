@@ -11,8 +11,5 @@ public interface UserMapper {
 	UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 	
 	User toUser(UserDto userDto);
-	
-	default UserDto toDto(User user) {
-        return new UserDto(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getUserType().getName());
-    }
+	UserDto toDto(User user);
 }

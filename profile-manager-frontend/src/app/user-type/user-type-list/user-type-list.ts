@@ -21,9 +21,9 @@ export class UserTypeList {
     const sortedCol = this.sortedColumn();
     return this.userTypes().sort((a, b) => {
       if (this.sortAscending()) {
-        return a[sortedCol] > b[sortedCol] ? 1 : -1;
+        return a[sortedCol]! > b[sortedCol]! ? 1 : -1;
       } else {
-        return a[sortedCol] > b[sortedCol] ? -1 : 1;
+        return a[sortedCol]! > b[sortedCol]! ? -1 : 1;
       }
     });
   });

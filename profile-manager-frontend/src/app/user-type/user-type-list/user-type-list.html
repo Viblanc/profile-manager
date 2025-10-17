@@ -27,7 +27,7 @@
                 <td>
                     <div class="d-inline-flex gap-1">
                         <a [routerLink]='["edit", userType.id]' class="btn btn-lg btn-warning">Edit</a>
-                        <a (click)="removeUserType(userType.id)" class="btn btn-lg btn-danger">Remove</a>
+                        <a (click)="removeUserType(userType.id!)" class="btn btn-lg btn-danger">Remove</a>
                     </div>
                 </td>
             </tr>

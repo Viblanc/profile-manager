@@ -22,7 +22,7 @@
         <tbody>
             @for (user of sortedUsers(); track user.email) {
             <tr>
-                <td>{{ user.userType }}</td>
+                <td>{{ user.userType.name }}</td>
                 <td>{{ user.lastName }}</td>
                 <td>{{ user.firstName }}</td>
                 <td>{{ user.email }}</td>

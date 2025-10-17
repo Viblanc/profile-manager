@@ -33,6 +33,7 @@ export class NewUser implements OnInit {
     if (this.editMode()) {
       this.form.patchValue({
         ...this.user(),
+        userType: this.user()?.userType.name,
       });
     } else {
       this.form.patchValue({
@@ -70,7 +71,9 @@ export class NewUser implements OnInit {
       firstName: this.firstName.value,
       lastName: this.lastName.value,
       email: this.email.value,
-      userType: this.userType.value,
+      userType: {
+        name: this.userType.value,
+      },
     };
 
     if (this.editMode()) {

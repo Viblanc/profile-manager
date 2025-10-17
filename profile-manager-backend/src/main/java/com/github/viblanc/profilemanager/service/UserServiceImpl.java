@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
 		});
 
 		// retrieve user type, throw exception if it does not exist
-		UserType userType = userTypeRepository.findByName(userDto.userType()).orElseThrow(
+		UserType userType = userTypeRepository.findByName(userDto.userType().name()).orElseThrow(
 				() -> new UserTypeNotFoundException("User type " + userDto.userType() + " does not exist"));
 
 		// create user from dto
@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService {
 		}
 
 		// check if user type exists
-		UserType userType = userTypeRepository.findByName(userDto.userType()).orElseThrow(
+		UserType userType = userTypeRepository.findByName(userDto.userType().name()).orElseThrow(
 				() -> new UserTypeNotFoundException("User type " + userDto.userType() + " does not exist"));
 
 		// remove old user type
