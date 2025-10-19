@@ -6,37 +6,15 @@
         <button class="big-button" routerLink="add">Add a user type</button>
     </div>
 
-    @if (userTypes().length) {
-    <table id="my-table" class="table table-bordered text-center border-black my-table">
-        <thead>
-            <tr>
-                @for (header of tableHeaders; track header.id) {
-                @let selected = sortedColumn() === header.id;
-                <th (click)="sortUserTypes(header.id)" class="table-bordered clickable-table-heading">
-                    {{ header.title }} {{selected ? (sortAscending() ? '↓' : '↑') : ''}}
-                </th>
-                }
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @for (userType of sortedUserTypes(); track userType.id) {
-            <tr>
-                <td>{{ userType.id }}</td>
-                <td>{{ userType.name }}</td>
-                <td>
-                    <div class="d-inline-flex gap-1">
-                        <a [routerLink]='["edit", userType.id]' class="btn btn-lg btn-warning">Edit</a>
-                        <a (click)="removeUserType(userType.id!)" class="btn btn-lg btn-danger">Remove</a>
-                    </div>
-                </td>
-            </tr>
-            }
-        </tbody>
-    </table>
-    } @else {
-    <div class="alert alert-warning">
-        No user types found.
-    </div>
-    }
+    <app-table-container [data]="userTypes()" [headings]="headings" [rowRef]="rowRef"
+        [noContentRef]="noContentRef"></app-table-container>
 </div>
+
+<ng-template #rowRef let-userType="data">
+    <app-user-type-row [userType]="userType" (edit)="this.goToEditPage(userType)"
+        (delete)="this.removeUserType(userType.id)"></app-user-type-row>
+</ng-template>
+
+<ng-template #noContentRef>
+    <div class="alert alert-warning">No user type found.</div>
+</ng-template>

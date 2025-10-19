@@ -1,48 +1,44 @@
-import { Component, computed, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { UserApi } from '../user-api';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { UserRow } from './user-row/user-row';
+import { TableContainer } from '../../shared/table-container/table-container';
+import { TableHeadings } from '../../shared/table-container/heading';
+import { User } from '../user';
 
 @Component({
   selector: 'app-user-list',
-  imports: [RouterLink],
+  imports: [RouterLink, UserRow, TableContainer],
   templateUrl: './user-list.html',
   styleUrl: './user-list.css',
 })
 export class UserList implements OnInit {
   private userApi = inject(UserApi);
+  private router = inject(Router);
   private destroyRef = inject(DestroyRef);
   users = signal<User[]>([]);
-  sortedUsers = computed(() =>
-    this.users().sort((a, b) => {
-      const compareFn: (a: any, b: any) => 1 | -1 =
-        this.sortedColumn() === 'userType' ? compareUserTypes : compare;
-      if (this.sortAscending()) {
-        return compareFn(a[this.sortedColumn()], b[this.sortedColumn()]);
-      } else {
-        return compareFn(b[this.sortedColumn()], a[this.sortedColumn()]);
-      }
-    })
-  );
-  sortAscending = signal<boolean>(true);
-  sortedColumn = signal<Column>('userType');
-  tableHeaders: TableHeader[] = [
-    {
-      id: 'userType',
-      title: 'User Type',
+  headings: TableHeadings<User> = {
+    sortable: {
+      lastName: {
+        title: 'Last Name',
+        cmp: (a, b) => compare(a.lastName, b.lastName),
+      },
+      firstName: {
+        title: 'First Name',
+        cmp: (a, b) => compare(a.firstName, b.firstName),
+      },
+      email: {
+        title: 'Email',
+        cmp: (a, b) => compare(a.email, b.email),
+      },
+      userType: {
+        title: 'User Type',
+        cmp: (a, b) => compare(a.userType.name, b.userType.name),
+      },
     },
-    {
-      id: 'lastName',
-      title: 'Last Name',
-    },
-    {
-      id: 'firstName',
-      title: 'First Name',
-    },
-    {
-      id: 'email',
-      title: 'Email',
-    },
-  ];
+    other: ['Actions'],
+    keys: ['userType', 'lastName', 'firstName', 'email'],
+  };
 
   ngOnInit(): void {
     const subscription = this.userApi.getUsers().subscribe({
@@ -59,13 +55,12 @@ export class UserList implements OnInit {
     });
   }
 
-  sortUsers(column: Column) {
-    if (column === this.sortedColumn()) {
-      this.sortAscending.set(!this.sortAscending());
-    } else {
-      this.sortAscending.set(true);
-      this.sortedColumn.set(column);
-    }
+  goToProfilePage(user: User) {
+    this.router.navigateByUrl(`users/${user.id}`);
+  }
+
+  goToEditPage(user: User) {
+    this.router.navigateByUrl(`users/edit/${user.id}`);
   }
 
   removeUser(id: number): void {
@@ -77,13 +72,4 @@ export class UserList implements OnInit {
   }
 }
 
-const compare = (a: string, b: string) => (a < b ? -1 : 1);
-const compareUserTypes = (a: UserType, b: UserType) => compare(a.name, b.name);
-
-const sortedColumns = ['userType', 'lastName', 'firstName', 'email'] as const;
-type Column = (typeof sortedColumns)[number];
-
-interface TableHeader {
-  id: Column;
-  title: string;
-}
+const compare = (a: string, b: string) => (a < b ? -1 : a > b ? 1 : 0);

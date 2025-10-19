@@ -30,7 +30,7 @@ nav a {
 nav a::before {
   content: '';
   position: absolute;
-  height: 3px;
+  height: 5px;
   width: 0;
   background-color: #890e54ff;
   right: 0;

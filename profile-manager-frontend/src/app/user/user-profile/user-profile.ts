@@ -1,6 +1,7 @@
 import { Component, DestroyRef, inject, input } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { UserApi } from '../user-api';
+import { User } from '../user';
 
 @Component({
   selector: 'app-user-profile',

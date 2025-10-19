@@ -1,0 +1,15 @@
+<ng-template #template>
+    <tr>
+        <td>{{ user().userType.name }}</td>
+        <td>{{ user().lastName }}</td>
+        <td>{{ user().firstName }}</td>
+        <td>{{ user().email }}</td>
+        <td>
+            <div class="d-inline-flex gap-1">
+                <a (click)="view.emit(user())" class="btn btn-lg btn-success">View Profile</a>
+                <a (click)="edit.emit(user())" class="btn btn-lg btn-warning">Edit</a>
+                <a (click)="delete.emit(user().id!)" class="btn btn-lg btn-danger">Remove</a>
+            </div>
+        </td>
+    </tr>
+</ng-template>

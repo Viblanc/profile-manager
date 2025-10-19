@@ -5,42 +5,15 @@
     <div class="text-center">
         <button class="big-button" routerLink="add">Add a user</button>
     </div>
-
-    @if (users().length) {
-    <table id="my-table" class="table table-bordered text-center border-black my-table">
-        <thead>
-            <tr>
-                @for (header of tableHeaders; track header.id) {
-                @let selected = sortedColumn() === header.id;
-                <th (click)="sortUsers(header.id)" class="table-bordered clickable-table-heading">
-                    {{ header.title }} {{selected ? (sortAscending() ? '↓' : '↑') : ''}}
-                </th>
-                }
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @for (user of sortedUsers(); track user.email) {
-            <tr>
-                <td>{{ user.userType.name }}</td>
-                <td>{{ user.lastName }}</td>
-                <td>{{ user.firstName }}</td>
-                <td>{{ user.email }}</td>
-                <td>
-                    <div class="d-inline-flex gap-1">
-                        <a [routerLink]='[user.id]' class="btn btn-lg btn-success">View Profile</a>
-                        <a [routerLink]='["edit", user.id]' class="btn btn-lg btn-warning">Edit</a>
-                        <a (click)="removeUser(user.id!)" class="btn btn-lg btn-danger">Remove</a>
-                    </div>
-
-                </td>
-            </tr>
-            }
-        </tbody>
-    </table>
-    } @else {
-    <div class="alert alert-warning">
-        No users found.
-    </div>
-    }
+    <app-table-container [data]="users()" [headings]="headings" [rowRef]="rowRef"
+        [noContentRef]="noContentRef"></app-table-container>
 </div>
+
+<ng-template #rowRef let-user="data">
+    <app-user-row [user]="user" (view)="this.goToProfilePage(user)" (edit)="this.goToEditPage(user)"
+        (delete)="this.removeUser(user.id)"></app-user-row>
+</ng-template>
+
+<ng-template #noContentRef>
+    <div class="alert alert-warning">No users found.</div>
+</ng-template>

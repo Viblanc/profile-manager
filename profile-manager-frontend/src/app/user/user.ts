@@ -1,4 +1,6 @@
-interface User {
+import { UserType } from '../user-type/user-type';
+
+export interface User {
   id?: number;
   firstName: string;
   lastName: string;

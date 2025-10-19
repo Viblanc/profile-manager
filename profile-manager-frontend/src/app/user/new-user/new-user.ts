@@ -4,6 +4,8 @@ import { UserApi } from '../user-api';
 import { notBlank } from '../../shared/custom-validators';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { User } from '../user';
+import { UserType } from '../../user-type/user-type';
 
 @Component({
   selector: 'app-new-user',

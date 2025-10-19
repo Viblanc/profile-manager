@@ -37,6 +37,10 @@ body {
 #my-table th {
   background-color: #890e54ff;
   color: white;
+  /* cursor: pointer; */
+}
+
+.clickable-table-heading {
   cursor: pointer;
 }
 

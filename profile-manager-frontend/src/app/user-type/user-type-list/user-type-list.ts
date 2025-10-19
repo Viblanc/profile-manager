@@ -1,40 +1,37 @@
-import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
+import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { UserTypeApi } from '../user-type-api';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { UserTypeRow } from '../user-type-row/user-type-row';
+import { TableContainer } from '../../shared/table-container/table-container';
+import { TableHeadings } from '../../shared/table-container/heading';
+import { UserType } from '../user-type';
+import { User } from '../../user/user';
 
 @Component({
   selector: 'app-user-type-list',
-  imports: [RouterLink],
+  imports: [RouterLink, UserTypeRow, TableContainer],
   templateUrl: './user-type-list.html',
   styleUrl: './user-type-list.css',
 })
 export class UserTypeList {
   private userTypeApi = inject(UserTypeApi);
+  private router = inject(Router);
   private destroyRef = inject(DestroyRef);
-  sortedColumns = columns;
   userTypes = signal<UserType[]>([]);
-  sortedUserTypes = computed(() => {
-    const sortedCol = this.sortedColumn();
-    return this.userTypes().sort((a, b) => {
-      if (this.sortAscending()) {
-        return a[sortedCol]! > b[sortedCol]! ? 1 : -1;
-      } else {
-        return a[sortedCol]! > b[sortedCol]! ? -1 : 1;
-      }
-    });
-  });
-  tableHeaders: TableHeader[] = [
-    {
-      id: 'id',
-      title: 'Id',
+  headings: TableHeadings<UserType> = {
+    sortable: {
+      id: {
+        title: 'Id',
+        cmp: (a, b) => compare(a.id!, b.id!),
+      },
+      name: {
+        title: 'User Type',
+        cmp: (a, b) => compare(a.name, b.name),
+      },
     },
-    {
-      id: 'name',
-      title: 'Type Name',
-    },
-  ];
-  sortedColumn = signal<Column>('id');
-  sortAscending = signal<boolean>(true);
+    other: ['Actions'],
+    keys: ['id', 'name'],
+  };
 
   ngOnInit(): void {
     const subscription = this.userTypeApi.getUserTypes().subscribe({
@@ -51,12 +48,8 @@ export class UserTypeList {
     });
   }
 
-  sortUserTypes(column: Column) {
-    if (column === this.sortedColumn()) {
-      this.sortAscending.set(!this.sortAscending());
-    } else {
-      this.sortedColumn.set(column);
-    }
+  goToEditPage(user: User) {
+    this.router.navigateByUrl(`user_types/edit/${user.id}`);
   }
 
   removeUserType(id: number) {
@@ -70,10 +63,4 @@ export class UserTypeList {
   }
 }
 
-const columns = ['id', 'name'] as const;
-type Column = (typeof columns)[number];
-
-interface TableHeader {
-  id: Column;
-  title: string;
-}
+const compare = (a: string | number, b: string | number) => (a < b ? -1 : a > b ? 1 : 0);
