@@ -2,9 +2,9 @@ import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { UserApi } from '../user-api';
 import { Router, RouterLink } from '@angular/router';
 import { UserRow } from './user-row/user-row';
-import { TableContainer } from '../../shared/table-container/table-container';
-import { TableHeadings } from '../../shared/table-container/heading';
 import { User } from '../user';
+import { TableContainer } from '../../../shared/table-container/table-container';
+import { TableHeadings } from '../../../shared/table-container/heading';
 
 @Component({
   selector: 'app-user-list',

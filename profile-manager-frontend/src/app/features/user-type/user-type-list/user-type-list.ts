@@ -2,10 +2,10 @@ import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { UserTypeApi } from '../user-type-api';
 import { Router, RouterLink } from '@angular/router';
 import { UserTypeRow } from '../user-type-row/user-type-row';
-import { TableContainer } from '../../shared/table-container/table-container';
-import { TableHeadings } from '../../shared/table-container/heading';
 import { UserType } from '../user-type';
 import { User } from '../../user/user';
+import { TableContainer } from '../../../shared/table-container/table-container';
+import { TableHeadings } from '../../../shared/table-container/heading';
 
 @Component({
   selector: 'app-user-type-list',

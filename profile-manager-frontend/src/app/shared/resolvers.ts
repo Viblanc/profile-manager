@@ -1,7 +1,9 @@
 import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from '@angular/router';
-import { UserApi } from '../user/user-api';
-import { UserTypeApi } from '../user-type/user-type-api';
+import { UserType } from '../features/user-type/user-type';
+import { User } from '../features/user/user';
+import { UserApi } from '../features/user/user-api';
+import { UserTypeApi } from '../features/user-type/user-type-api';
 
 export const userResolver: ResolveFn<User> = (
   route: ActivatedRouteSnapshot,

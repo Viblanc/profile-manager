@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
-import { UserList } from './user/user-list/user-list';
-import { NewUser } from './user/new-user/new-user';
-import { UserTypeList } from './user-type/user-type-list/user-type-list';
-import { NewUserType } from './user-type/new-user-type/new-user-type';
+import { UserList } from './features/user/user-list/user-list';
+import { NewUser } from './features/user/new-user/new-user';
+import { UserProfile } from './features/user/user-profile/user-profile';
+import { UserTypeList } from './features/user-type/user-type-list/user-type-list';
+import { NewUserType } from './features/user-type/new-user-type/new-user-type';
 import { userResolver, userTypeResolver, userTypesResolver } from './shared/resolvers';
-import { UserProfile } from './user/user-profile/user-profile';
 
 export const routes: Routes = [
   {

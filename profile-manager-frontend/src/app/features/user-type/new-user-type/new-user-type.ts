@@ -2,9 +2,9 @@ import { Component, computed, DestroyRef, inject, input, OnInit, signal } from '
 import { UserTypeApi } from '../user-type-api';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { notBlank } from '../../shared/custom-validators';
 import { Observable } from 'rxjs';
 import { UserType } from '../user-type';
+import { notBlank } from '../../../shared/custom-validators';
 
 @Component({
   selector: 'app-new-user-type',
