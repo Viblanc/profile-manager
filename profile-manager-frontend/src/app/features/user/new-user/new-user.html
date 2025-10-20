@@ -7,6 +7,9 @@
             @if (lastName.hasError('required') || lastName.hasError('isBlank')) {
             Last name is required.
             }
+            @if (lastName.hasError('maxlength')) {
+            Last name cannot exceed 64 characters.
+            }
         </div>
         }
 
@@ -15,6 +18,9 @@
         <div class="error-message bg-danger-subtle text-danger-emphasis">
             @if (firstName.hasError('required') || firstName.hasError('isBlank')) {
             First name is required.
+            }
+            @if (firstName.hasError('maxlength')) {
+            First name cannot exceed 64 characters.
             }
         </div>
         }

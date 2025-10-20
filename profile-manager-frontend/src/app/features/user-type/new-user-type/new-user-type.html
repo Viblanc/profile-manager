@@ -6,8 +6,8 @@
         <div class="error-message bg-danger-subtle text-danger-emphasis">
             @if (name.hasError('required') || name.hasError('isBlank')) {
             User type name is required.
-            } @else {
-            An error has occurred.
+            } @else if (name.hasError('maxlength')) {
+            User type name cannot exceed 64 characters.
             }
         </div>
         }

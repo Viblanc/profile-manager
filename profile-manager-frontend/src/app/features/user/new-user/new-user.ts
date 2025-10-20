@@ -26,8 +26,8 @@ export class NewUser implements OnInit {
   userTypes = input.required<UserType[]>();
   errorMessage = signal<string>('');
   form = this.formBuilder.nonNullable.group({
-    lastName: ['', [Validators.required, notBlank]],
-    firstName: ['', [Validators.required, notBlank]],
+    lastName: ['', [Validators.required, Validators.maxLength(64), notBlank]],
+    firstName: ['', [Validators.required, Validators.maxLength(64), notBlank]],
     email: ['', [Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
     userType: ['', [Validators.required]],
   });

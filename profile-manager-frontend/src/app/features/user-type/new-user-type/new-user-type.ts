@@ -24,7 +24,7 @@ export class NewUserType implements OnInit {
   editMode = computed(() => this.userType() !== undefined);
   errorMessage = signal<string>('');
   form = this.formBuilder.nonNullable.group({
-    name: ['', [Validators.required, notBlank]],
+    name: ['', [Validators.required, Validators.maxLength(64), notBlank]],
   });
 
   ngOnInit(): void {
