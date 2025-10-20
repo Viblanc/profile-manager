@@ -1,56 +1,35 @@
 package com.github.viblanc.profilemanager.controller;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import java.util.List;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.PostgreSQLContainer;
+import org.springframework.context.annotation.Import;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
+import com.github.viblanc.profilemanager.config.MyTestConfiguration;
+import com.github.viblanc.profilemanager.dto.UserTypeDto;
 import com.github.viblanc.profilemanager.entity.UserType;
 import com.github.viblanc.profilemanager.repository.UserTypeRepository;
-import com.github.viblanc.profilemanager.service.UserTypeService;
 
+@Testcontainers
+@Import(MyTestConfiguration.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class UserTypeControllerTest {
+public class UserTypeControllerTest {
 
 	@LocalServerPort
 	private Integer port;
 
-	static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:17-alpine");
-
-	@BeforeAll
-	static void beforeAll() {
-		postgres.start();
-	}
-
-	@AfterAll
-	static void afterAll() {
-		postgres.stop();
-	}
-
-	@DynamicPropertySource
-	static void configureProperties(DynamicPropertyRegistry registry) {
-		registry.add("spring.datasource.url", postgres::getJdbcUrl);
-		registry.add("spring.datasource.username", postgres::getUsername);
-		registry.add("spring.datasource.password", postgres::getPassword);
-	}
-
 	@Autowired
-	UserTypeService userTypeService;
-
-	@Autowired
-	UserTypeRepository userTypeRepository;
+	private UserTypeRepository userTypeRepository;
 
 	@BeforeEach
 	void setUp() {
@@ -70,18 +49,58 @@ class UserTypeControllerTest {
 			.statusCode(200)
 			.body(".", hasSize(2));
 	}
-
+	
 	@Test
-	void shouldGetUserTypeById(Long id) {
-		List<UserType> userTypes = List.of(new UserType(null, "Admin", null), new UserType(null, "User", null));
-		userTypeRepository.saveAll(userTypes);
+	void shouldGetUserTypeById() {
+		UserType userType = new UserType(null, "Admin", null);
+		userTypeRepository.save(userType);
 
 		given().contentType(ContentType.JSON)
 			.when()
-			.get("/api/user_types")
+			.get("/api/user_types/{id}", userType.getId())
 			.then()
 			.statusCode(200)
-			.body(".", hasSize(2));
+			.body("name", equalTo("Admin"));
+	}
+	
+	@Test
+	void shouldAddUserType() {
+		UserTypeDto userType = new UserTypeDto(null, "User");
+
+		given().contentType(ContentType.JSON)
+			.when()
+			.body(userType)
+			.post("/api/user_types")
+			.then()
+			.statusCode(201)
+			.body("name", equalTo("User"));
+	}
+	
+	@Test
+	void shouldUpdateUserType() {
+		UserType userType = new UserType(null, "User", null);
+		userTypeRepository.save(userType);
+		UserTypeDto newUserType = new UserTypeDto(userType.getId(), "Admin");
+
+		given().contentType(ContentType.JSON)
+			.when()
+			.body(newUserType)
+			.put("/api/user_types/{id}", userType.getId())
+			.then()
+			.statusCode(201)
+			.body("name", equalTo("Admin"));
+	}
+	
+	@Test
+	void shouldDeleteUserType() {
+		UserType userType = new UserType(null, "User", null);
+		userTypeRepository.save(userType);
+
+		given().contentType(ContentType.JSON)
+			.when()
+			.delete("/api/user_types/{id}", userType.getId())
+			.then()
+			.statusCode(204);
 	}
 
 }

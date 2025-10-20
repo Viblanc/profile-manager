@@ -16,7 +16,7 @@ import com.github.viblanc.profilemanager.dto.ErrorResponse;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
 	@ExceptionHandler(UserTypeNotFoundException.class)
@@ -42,14 +42,17 @@ public class GlobalExceptionHandler {
 
 		return new ResponseEntity<>(response, HttpStatus.CONFLICT);
 	}
-	
+
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException exception) {
-        logger.info("Validation error: {}", exception.getMessage());
-        List<String> errors = exception.getBindingResult().getAllErrors().stream()
-            .map(DefaultMessageSourceResolvable::getDefaultMessage)
-            .toList();
-        return new ResponseEntity<>(new ErrorResponse(Instant.now(), "Validation Failed", errors), HttpStatus.BAD_REQUEST);
-    }
+	public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException exception) {
+		logger.info("Validation error: {}", exception.getMessage());
+		List<String> errors = exception.getBindingResult()
+			.getAllErrors()
+			.stream()
+			.map(DefaultMessageSourceResolvable::getDefaultMessage)
+			.toList();
+		return new ResponseEntity<>(new ErrorResponse(Instant.now(), "Validation Failed", errors),
+				HttpStatus.BAD_REQUEST);
+	}
 
 }

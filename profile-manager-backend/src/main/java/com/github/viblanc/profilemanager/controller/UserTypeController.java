@@ -48,7 +48,7 @@ public class UserTypeController {
 	public ResponseEntity<UserTypeDto> editUserType(@PathVariable Long id, @RequestBody @Valid UserTypeDto dto) {
 		UserTypeDto updatedUserType = this.userTypeService.editUserType(id, dto);
 
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(updatedUserType);
+		return ResponseEntity.status(HttpStatus.CREATED).body(updatedUserType);
 	}
 
 	@DeleteMapping("{id}")

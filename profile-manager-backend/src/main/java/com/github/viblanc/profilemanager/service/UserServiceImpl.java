@@ -53,7 +53,8 @@ public class UserServiceImpl implements UserService {
 
 		// retrieve user type, throw exception if it does not exist
 		UserType userType = userTypeRepository.findByName(userDto.userType().name())
-			.orElseThrow(() -> new UserTypeNotFoundException("User type " + userDto.userType().name() + " does not exist"));
+			.orElseThrow(
+					() -> new UserTypeNotFoundException("User type " + userDto.userType().name() + " does not exist"));
 
 		// create user from dto
 		User user = mapper.toUser(userDto);
@@ -80,7 +81,8 @@ public class UserServiceImpl implements UserService {
 
 		// check if user type exists
 		UserType userType = userTypeRepository.findByName(userDto.userType().name())
-			.orElseThrow(() -> new UserTypeNotFoundException("User type " + userDto.userType().name() + " does not exist"));
+			.orElseThrow(
+					() -> new UserTypeNotFoundException("User type " + userDto.userType().name() + " does not exist"));
 
 		// replace old data with new data
 		user.setFirstName(userDto.firstName());

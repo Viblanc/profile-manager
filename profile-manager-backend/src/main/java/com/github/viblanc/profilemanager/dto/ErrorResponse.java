@@ -6,16 +6,16 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 public class ErrorResponse {
-	
+
 	private Instant timestamp;
-	
+
 	private String message;
-	
+
 	public ErrorResponse(Instant timestamp, String message) {
 		this.timestamp = timestamp;
 		this.message = message;
 	}
-	
+
 	public ErrorResponse(Instant timestamp, String message, Object details) {
 		this.timestamp = timestamp;
 		this.message = message;

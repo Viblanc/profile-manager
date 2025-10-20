@@ -12,23 +12,23 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class LoggingAspect {
-	
+
 	@Before("execution(* com.github.viblanc.profilemanager.service.*.*(..))")
 	public void logBeforeMethod(JoinPoint joinPoint) {
 		Logger logger = LoggerFactory.getLogger(joinPoint.getTarget().getClass());
 		logger.info("Entering method: {}", joinPoint.getSignature().getName());
 	}
-	
+
 	@AfterReturning(pointcut = "execution(* com.github.viblanc.profilemanager.service.*.*(..))", returning = "result")
 	public void logAfterMethod(JoinPoint joinPoint, Object result) {
 		Logger logger = LoggerFactory.getLogger(joinPoint.getTarget().getClass());
 		logger.info("Method {} executed with result: {}", joinPoint.getSignature().getName(), result);
 	}
-	
+
 	@AfterThrowing(pointcut = "execution(* com.github.viblanc.profilemanager.service.*.*(..))", throwing = "ex")
 	public void logAfterThrowing(JoinPoint joinPoint, Throwable ex) {
 		Logger logger = LoggerFactory.getLogger(joinPoint.getTarget().getClass());
 		logger.warn("Exception in method {} with message: {}", joinPoint.getSignature().getName(), ex.getMessage());
 	}
-	
+
 }
