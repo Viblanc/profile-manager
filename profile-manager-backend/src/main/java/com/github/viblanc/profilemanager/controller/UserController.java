@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.viblanc.profilemanager.dto.UserDto;
 import com.github.viblanc.profilemanager.service.UserService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -37,14 +39,14 @@ public class UserController {
 	}
 
 	@PostMapping
-	public ResponseEntity<UserDto> addUser(@RequestBody UserDto userDto) {
+	public ResponseEntity<UserDto> addUser(@RequestBody @Valid UserDto userDto) {
 		UserDto addedUser = userService.addUser(userDto);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(addedUser);
 	}
 
 	@PutMapping("{id}")
-	public ResponseEntity<UserDto> editUser(@PathVariable Long id, @RequestBody UserDto userDto) {
+	public ResponseEntity<UserDto> editUser(@PathVariable Long id, @RequestBody @Valid UserDto userDto) {
 		UserDto updatedUser = userService.editUser(id, userDto);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(updatedUser);

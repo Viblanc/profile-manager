@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.viblanc.profilemanager.dto.UserTypeDto;
 import com.github.viblanc.profilemanager.service.UserTypeService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/user_types")
 public class UserTypeController {
@@ -37,13 +39,13 @@ public class UserTypeController {
 	}
 
 	@PostMapping
-	public ResponseEntity<UserTypeDto> addUserType(@RequestBody UserTypeDto dto) {
+	public ResponseEntity<UserTypeDto> addUserType(@RequestBody @Valid UserTypeDto dto) {
 		UserTypeDto newUserType = this.userTypeService.addUserType(dto);
 		return ResponseEntity.status(HttpStatus.CREATED).body(newUserType);
 	}
 
 	@PutMapping("{id}")
-	public ResponseEntity<UserTypeDto> editUserType(@PathVariable Long id, @RequestBody UserTypeDto dto) {
+	public ResponseEntity<UserTypeDto> editUserType(@PathVariable Long id, @RequestBody @Valid UserTypeDto dto) {
 		UserTypeDto updatedUserType = this.userTypeService.editUserType(id, dto);
 
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(updatedUserType);
