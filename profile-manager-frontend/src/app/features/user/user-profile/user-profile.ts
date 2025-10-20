@@ -2,10 +2,11 @@ import { Component, DestroyRef, inject, input } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { UserApi } from '../user-api';
 import { User } from '../user';
+import { PageTitle } from '../../../core/page-title/page-title';
 
 @Component({
   selector: 'app-user-profile',
-  imports: [RouterLink],
+  imports: [RouterLink, PageTitle],
   templateUrl: './user-profile.html',
   styleUrl: './user-profile.css',
 })

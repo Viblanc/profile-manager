@@ -5,10 +5,12 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { UserType } from '../user-type';
 import { notBlank } from '../../../shared/custom-validators';
+import { PageTitle } from '../../../core/page-title/page-title';
+import { BigButton } from '../../../shared/big-button/big-button';
 
 @Component({
   selector: 'app-new-user-type',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, PageTitle, BigButton],
   templateUrl: './new-user-type.html',
   styleUrl: './new-user-type.css',
 })

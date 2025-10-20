@@ -1,10 +1,7 @@
-<div class="title">
-    <h1>User List</h1>
-</div>
+<app-page-title title="Users List"></app-page-title>
 <div class="container w-80">
-    <div class="text-center">
-        <button class="big-button" routerLink="add">Add a user</button>
-    </div>
+    <a bigButton routerLink="add">Add a user</a>
+
     <app-table-container [data]="users()" [headings]="headings" [rowRef]="rowRef"
         [noContentRef]="noContentRef"></app-table-container>
 </div>

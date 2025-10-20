@@ -4,7 +4,7 @@
         <tr>
             @for (key of headingsKeys(); track key) {
             @let selected = selectedColumn() === key;
-            <th (click)="sortData(key)" class="table-bordered clickable-table-heading">
+            <th (click)="sortData(key)" class="table-bordered" role="button">
                 {{ sortableHeadings()[key].title }} {{selected ? (sortAscending() ? '↓' : '↑') : ''}}
             </th>
             }

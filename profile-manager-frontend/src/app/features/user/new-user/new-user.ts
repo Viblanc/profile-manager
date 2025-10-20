@@ -6,10 +6,12 @@ import { Observable } from 'rxjs';
 import { User } from '../user';
 import { UserType } from '../../user-type/user-type';
 import { notBlank } from '../../../shared/custom-validators';
+import { PageTitle } from '../../../core/page-title/page-title';
+import { BigButton } from '../../../shared/big-button/big-button';
 
 @Component({
   selector: 'app-new-user',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, PageTitle, BigButton],
   templateUrl: './new-user.html',
   styleUrl: './new-user.css',
 })

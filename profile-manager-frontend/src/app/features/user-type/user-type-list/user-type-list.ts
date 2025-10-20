@@ -6,10 +6,12 @@ import { UserType } from '../user-type';
 import { User } from '../../user/user';
 import { TableContainer } from '../../../shared/table-container/table-container';
 import { TableHeadings } from '../../../shared/table-container/heading';
+import { PageTitle } from '../../../core/page-title/page-title';
+import { BigButton } from '../../../shared/big-button/big-button';
 
 @Component({
   selector: 'app-user-type-list',
-  imports: [RouterLink, UserTypeRow, TableContainer],
+  imports: [RouterLink, UserTypeRow, TableContainer, PageTitle, BigButton],
   templateUrl: './user-type-list.html',
   styleUrl: './user-type-list.css',
 })

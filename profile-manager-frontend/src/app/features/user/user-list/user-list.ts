@@ -3,12 +3,14 @@ import { UserApi } from '../user-api';
 import { Router, RouterLink } from '@angular/router';
 import { UserRow } from './user-row/user-row';
 import { User } from '../user';
-import { TableContainer } from '../../../shared/table-container/table-container';
 import { TableHeadings } from '../../../shared/table-container/heading';
+import { PageTitle } from '../../../core/page-title/page-title';
+import { TableContainer } from '../../../shared/table-container/table-container';
+import { BigButton } from '../../../shared/big-button/big-button';
 
 @Component({
   selector: 'app-user-list',
-  imports: [RouterLink, UserRow, TableContainer],
+  imports: [RouterLink, UserRow, PageTitle, TableContainer, BigButton],
   templateUrl: './user-list.html',
   styleUrl: './user-list.css',
 })

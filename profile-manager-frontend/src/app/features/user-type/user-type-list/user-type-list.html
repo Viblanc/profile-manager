@@ -1,10 +1,6 @@
-<div class="title">
-    <h1>User Types List</h1>
-</div>
+<app-page-title title="User Types List"></app-page-title>
 <div class="container w-80">
-    <div class="text-center">
-        <button class="big-button" routerLink="add">Add a user type</button>
-    </div>
+    <button bigButton routerLink="add">Add a user type</button>
 
     <app-table-container [data]="userTypes()" [headings]="headings" [rowRef]="rowRef"
         [noContentRef]="noContentRef"></app-table-container>
