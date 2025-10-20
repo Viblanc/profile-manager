@@ -3,7 +3,7 @@ import { UserApi } from '../user-api';
 import { Router, RouterLink } from '@angular/router';
 import { UserRow } from './user-row/user-row';
 import { User } from '../user';
-import { TableHeadings } from '../../../shared/table-container/heading';
+import { TableHeadings } from '../../../shared/table-container/table-headings';
 import { PageTitle } from '../../../core/page-title/page-title';
 import { TableContainer } from '../../../shared/table-container/table-container';
 import { BigButton } from '../../../shared/big-button/big-button';

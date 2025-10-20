@@ -1,6 +1,6 @@
 import { Component, computed, input, linkedSignal, signal, TemplateRef } from '@angular/core';
 import { CommonModule, NgTemplateOutlet } from '@angular/common';
-import { TableHeadings } from './heading';
+import { TableHeadings } from './table-headings';
 
 @Component({
   selector: 'app-table-container',
