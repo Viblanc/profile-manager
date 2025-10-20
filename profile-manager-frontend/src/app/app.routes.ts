@@ -5,6 +5,7 @@ import { UserProfile } from './features/user/user-profile/user-profile';
 import { UserTypeList } from './features/user-type/user-type-list/user-type-list';
 import { NewUserType } from './features/user-type/new-user-type/new-user-type';
 import { userResolver, userTypeResolver, userTypesResolver } from './shared/resolvers';
+import { NotFoundPage } from './core/not-found-page/not-found-page';
 
 export const routes: Routes = [
   {
@@ -53,5 +54,9 @@ export const routes: Routes = [
     path: '',
     pathMatch: 'full',
     redirectTo: 'users',
+  },
+  {
+    path: '**',
+    component: NotFoundPage,
   },
 ];
