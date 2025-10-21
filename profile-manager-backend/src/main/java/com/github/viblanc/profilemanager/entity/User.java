@@ -30,6 +30,17 @@ public class User {
 	@JoinColumn(name = "user_type_id")
 	private UserType userType;
 
+	public User() {
+	}
+
+	public User(Long id, String firstName, String lastName, String email, UserType userType) {
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.userType = userType;
+	}
+
 	public Long getId() {
 		return id;
 	}

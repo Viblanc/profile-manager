@@ -91,8 +91,30 @@
 	<build>
 		<plugins>
 			<plugin>
+	            <groupId>org.codehaus.mojo</groupId>
+	            <artifactId>build-helper-maven-plugin</artifactId>
+	            <executions>
+	                <execution>
+	                    <id>add-integration-test-sources</id>
+	                    <phase>generate-test-sources</phase>
+	                    <goals>
+	                        <goal>add-test-source</goal>
+	                    </goals>
+	                    <configuration>
+	                        <sources>
+	                            <source>src/it/java</source>
+	                        </sources>
+	                    </configuration>
+	                </execution>
+	            </executions>
+	        </plugin>
+			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
 			</plugin>
 			<plugin>
 	            <groupId>org.apache.maven.plugins</groupId>
