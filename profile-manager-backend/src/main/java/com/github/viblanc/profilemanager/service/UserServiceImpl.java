@@ -3,6 +3,8 @@ package com.github.viblanc.profilemanager.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.github.viblanc.profilemanager.dto.UserDto;
 import com.github.viblanc.profilemanager.entity.User;
 import com.github.viblanc.profilemanager.entity.UserType;
@@ -43,6 +45,7 @@ public class UserServiceImpl implements UserService {
 		return mapper.toDto(user);
 	}
 
+	@Transactional
 	@Override
 	public UserDto addUser(UserDto userDto) {
 		// throw exception if user with same email address already exists
@@ -68,6 +71,7 @@ public class UserServiceImpl implements UserService {
 		return mapper.toDto(user);
 	}
 
+	@Transactional
 	@Override
 	public UserDto editUser(Long id, UserDto userDto) {
 		User user = userRepository.findById(id)

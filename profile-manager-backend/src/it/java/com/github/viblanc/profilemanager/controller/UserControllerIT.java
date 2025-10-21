@@ -15,8 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.annotation.Import;
-import org.testcontainers.junit.jupiter.Testcontainers;
-
 import com.github.viblanc.profilemanager.config.MyTestConfiguration;
 import com.github.viblanc.profilemanager.dto.UserDto;
 import com.github.viblanc.profilemanager.dto.UserTypeDto;
@@ -29,7 +27,6 @@ import com.github.viblanc.profilemanager.repository.UserTypeRepository;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 
-@Testcontainers
 @Import(MyTestConfiguration.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class UserControllerIT {

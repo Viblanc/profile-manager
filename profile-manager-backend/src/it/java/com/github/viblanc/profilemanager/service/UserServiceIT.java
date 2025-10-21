@@ -13,9 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.transaction.annotation.Transactional;
-import org.testcontainers.junit.jupiter.Testcontainers;
-
 import com.github.viblanc.profilemanager.config.MyTestConfiguration;
 import com.github.viblanc.profilemanager.dto.UserDto;
 import com.github.viblanc.profilemanager.dto.UserTypeDto;
@@ -25,7 +22,6 @@ import com.github.viblanc.profilemanager.mappers.UserMapper;
 import com.github.viblanc.profilemanager.repository.UserRepository;
 import com.github.viblanc.profilemanager.repository.UserTypeRepository;
 
-@Testcontainers
 @Import(MyTestConfiguration.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class UserServiceIT {
@@ -80,7 +76,6 @@ class UserServiceIT {
         assertEquals(expected, actual);
     }
 
-    @Transactional
     @Test
     void shouldAddUser() {
         UserDto expected = new UserDto(null, "John", "Doe", "john@doe.mail", userTypeDto);
@@ -92,7 +87,6 @@ class UserServiceIT {
                 () -> assertEquals(expected.userType().name(), actual.userType().name()));
     }
 
-    @Transactional
     @Test
     void shouldUpdateUserType() {
         User user = userRepository.save(new User(null, "John", "Doe", "john@doe.mail", userType));
