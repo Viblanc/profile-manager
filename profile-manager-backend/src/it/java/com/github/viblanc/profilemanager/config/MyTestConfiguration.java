@@ -10,7 +10,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 @ImportTestcontainers(ContainerConfig.class)
 public class MyTestConfiguration {
 
-	@Bean
+    @Bean
 	@ServiceConnection
 	PostgreSQLContainer<?> postgres() {
 		return new PostgreSQLContainer<>("postgres:17-alpine");

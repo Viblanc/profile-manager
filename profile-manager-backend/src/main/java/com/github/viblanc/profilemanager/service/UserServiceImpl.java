@@ -3,7 +3,6 @@ package com.github.viblanc.profilemanager.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
-
 import com.github.viblanc.profilemanager.dto.UserDto;
 import com.github.viblanc.profilemanager.entity.User;
 import com.github.viblanc.profilemanager.entity.UserType;

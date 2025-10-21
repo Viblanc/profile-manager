@@ -26,7 +26,7 @@ import com.github.viblanc.profilemanager.repository.UserTypeRepository;
 @Testcontainers
 @Import(MyTestConfiguration.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class UserTypeControllerIT {
+class UserTypeControllerIT {
 
     @LocalServerPort
     private Integer port;
