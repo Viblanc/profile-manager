@@ -46,7 +46,7 @@ class UserServiceTest {
 
     private static final UserTypeDto USER_TYPE_DTO = new UserTypeDto(1L, "Admin");
 
-    private final static User USER = new User(1L, "John", "Doe", "john@doe.mail", USER_TYPE);
+    private static final User USER = new User(1L, "John", "Doe", "john@doe.mail", USER_TYPE);
 
     private static final UserDto USER_DTO = new UserDto(1L, "John", "Doe", "john@doe.mail", USER_TYPE_DTO);
 
