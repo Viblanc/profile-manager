@@ -31,7 +31,7 @@ public class UserTypeServiceImpl implements UserTypeService {
 	@Override
 	public UserTypeDto getUserType(Long id) {
 		UserType userType = repository.findById(id)
-			.orElseThrow(() -> new UserTypeNotFoundException("User type not found"));
+			.orElseThrow(() -> new UserTypeNotFoundException("User type with id " + id + " not found."));
 
 		return mapper.toDto(userType);
 	}
@@ -53,8 +53,12 @@ public class UserTypeServiceImpl implements UserTypeService {
 
 	@Override
 	public UserTypeDto editUserType(Long id, UserTypeDto userTypeDto) {
+		if (!id.equals(userTypeDto.id())) {
+			throw new IllegalArgumentException("IDs don't match.");
+		}
+		
 		UserType userType = repository.findById(id)
-			.orElseThrow(() -> new UserTypeNotFoundException("User type not found"));
+			.orElseThrow(() -> new UserTypeNotFoundException("User type with id " + id + " not found."));
 
 		// check if new name is available
 		if (!userType.getName().equals(userTypeDto.name()) && repository.findByName(userTypeDto.name()).isPresent()) {

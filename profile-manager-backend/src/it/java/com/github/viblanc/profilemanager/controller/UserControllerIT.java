@@ -147,4 +147,119 @@ class UserControllerIT {
         given().contentType(ContentType.JSON).when().delete("/api/users/{id}", user.getId()).then().statusCode(204);
     }
 
+    @Test
+    void shouldGetError_whenUserNotFound() {
+        given().contentType(ContentType.JSON)
+            .when()
+            .get("/api/users/1")
+            .then()
+            .statusCode(404)
+            .assertThat()
+            .body("message", equalTo("User with id 1 not found."));
+    }
+
+    @Test
+    void shouldGetError_whenAddingUser_withEmailAlreadyExists() {
+        User user = new User(null, "John", "Doe", "john@doe.mail", userType);
+        userRepository.save(user);
+
+        UserDto newUser = new UserDto(null, "Jean", "Dupont", "john@doe.mail", userTypeDto);
+
+        given().contentType(ContentType.JSON)
+            .with()
+            .body(newUser)
+            .when()
+            .post("/api/users")
+            .then()
+            .statusCode(409)
+            .assertThat()
+            .body("message", equalTo("User with email john@doe.mail already exists."));
+    }
+    
+    @Test
+    void shouldGetError_whenAddingUser_withUnknownUserType() {
+        UserDto newUser = new UserDto(null, "Jean", "Dupont", "john@doe.mail", new UserTypeDto(null, "Guest"));
+
+        given().contentType(ContentType.JSON)
+            .with()
+            .body(newUser)
+            .when()
+            .post("/api/users")
+            .then()
+            .statusCode(404)
+            .assertThat()
+            .body("message", equalTo("User type with name Guest does not exist."));
+    }
+    
+    @Test
+    void shouldGetError_whenUpdatingUser_withDifferentIds() {
+    	User user = new User(null, "John", "Doe", "john@doe.mail", userType);
+        userRepository.save(user);
+
+        UserDto updatedUser = new UserDto(user.getId() + 1L, "Jean", "Dupont", "jdupont@mail.fr", userTypeDto);
+
+        given().contentType(ContentType.JSON)
+            .with()
+            .body(updatedUser)
+            .when()
+            .put("/api/users/{id}", user.getId())
+            .then()
+            .statusCode(400)
+            .assertThat()
+            .body("message", equalTo("IDs don't match."));
+    }
+    
+    @Test
+    void shouldGetError_whenUpdatingUser_notFound() {
+        UserDto newUser = new UserDto(1L, "Jean", "Dupont", "john@doe.mail", userTypeDto);
+
+        given().contentType(ContentType.JSON)
+            .with()
+            .body(newUser)
+            .when()
+            .put("/api/users/1")
+            .then()
+            .statusCode(404)
+            .assertThat()
+            .body("message", equalTo("User with id 1 not found."));
+    }
+    
+    @Test
+    void shouldGetError_whenUpdatingUser_withEmailAlreadyExists() {
+    	User user = new User(null, "John", "Doe", "john@doe.mail", userType);
+        userRepository.save(user);
+        User user2 = new User(null, "Jeanne", "Dupont", "jdupont@mail.fr", userType);
+        userRepository.save(user2);
+
+        UserDto updatedUser = new UserDto(user.getId(), "Jean", "Dupont", "jdupont@mail.fr", userTypeDto);
+
+        given().contentType(ContentType.JSON)
+            .with()
+            .body(updatedUser)
+            .when()
+            .put("/api/users/{id}", user.getId())
+            .then()
+            .statusCode(409)
+            .assertThat()
+            .body("message", equalTo("User with email jdupont@mail.fr already exists."));
+    }
+    
+    @Test
+    void shouldGetError_whenUpdatingUser_withUnknownUserType() {
+    	User user = new User(null, "John", "Doe", "john@doe.mail", userType);
+        userRepository.save(user);
+
+        UserDto updatedUser = new UserDto(user.getId(), "Jean", "Dupont", "john@doe.mail", new UserTypeDto(null, "Guest"));
+
+        given().contentType(ContentType.JSON)
+            .with()
+            .body(updatedUser)
+            .when()
+            .put("/api/users/{id}", user.getId())
+            .then()
+            .statusCode(404)
+            .assertThat()
+            .body("message", equalTo("User type with name Guest does not exist."));
+    }
+
 }

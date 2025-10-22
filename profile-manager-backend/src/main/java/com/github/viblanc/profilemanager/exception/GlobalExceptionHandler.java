@@ -18,10 +18,26 @@ import com.github.viblanc.profilemanager.dto.ErrorResponse;
 public class GlobalExceptionHandler {
 
 	private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+	
+	@ExceptionHandler(IllegalArgumentException.class)
+	public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException exception) {
+		logger.warn("Illegal Argument Exception: {}", exception.getMessage());
+		ErrorResponse response = new ErrorResponse(Instant.now(), exception.getMessage());
+
+		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	}
 
 	@ExceptionHandler(UserTypeNotFoundException.class)
 	public ResponseEntity<ErrorResponse> handleNotFoundException(UserTypeNotFoundException exception) {
 		logger.warn("User type not found: {}", exception.getMessage());
+		ErrorResponse response = new ErrorResponse(Instant.now(), exception.getMessage());
+
+		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler(UserNotFoundException.class)
+	public ResponseEntity<ErrorResponse> handleNotFoundException(UserNotFoundException exception) {
+		logger.warn("User not found: {}", exception.getMessage());
 		ErrorResponse response = new ErrorResponse(Instant.now(), exception.getMessage());
 
 		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);

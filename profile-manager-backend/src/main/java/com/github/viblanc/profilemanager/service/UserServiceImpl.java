@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserDto getUser(Long id) {
 		User user = userRepository.findById(id)
-			.orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
+			.orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found."));
 
 		return mapper.toDto(user);
 	}
@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
 		// retrieve user type, throw exception if it does not exist
 		UserType userType = userTypeRepository.findByName(userDto.userType().name())
 			.orElseThrow(
-					() -> new UserTypeNotFoundException("User type " + userDto.userType().name() + " does not exist"));
+					() -> new UserTypeNotFoundException("User type with name " + userDto.userType().name() + " does not exist."));
 
 		// create user from dto
 		User user = mapper.toUser(userDto);
@@ -74,8 +74,12 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	@Override
 	public UserDto editUser(Long id, UserDto userDto) {
+		if (!id.equals(userDto.id())) {
+			throw new IllegalArgumentException("IDs don't match.");
+		}
+		
 		User user = userRepository.findById(id)
-			.orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
+			.orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found."));
 
 		// check if email is available
 		if (!user.getEmail().equals(userDto.email()) && userRepository.findByEmail(userDto.email()).isPresent()) {
@@ -85,7 +89,7 @@ public class UserServiceImpl implements UserService {
 		// check if user type exists
 		UserType userType = userTypeRepository.findByName(userDto.userType().name())
 			.orElseThrow(
-					() -> new UserTypeNotFoundException("User type " + userDto.userType().name() + " does not exist"));
+					() -> new UserTypeNotFoundException("User type with name " + userDto.userType().name() + " does not exist."));
 
 		// replace old data with new data
 		user.setFirstName(userDto.firstName());
