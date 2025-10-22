@@ -17,58 +17,58 @@ import com.github.viblanc.profilemanager.dto.ErrorResponse;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-	private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
-	
-	@ExceptionHandler(IllegalArgumentException.class)
-	public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException exception) {
-		logger.warn("Illegal Argument Exception: {}", exception.getMessage());
-		ErrorResponse response = new ErrorResponse(Instant.now(), exception.getMessage());
+    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-	}
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException exception) {
+        logger.warn("Illegal Argument Exception: {}", exception.getMessage());
+        ErrorResponse response = new ErrorResponse(Instant.now(), exception.getMessage());
 
-	@ExceptionHandler(UserTypeNotFoundException.class)
-	public ResponseEntity<ErrorResponse> handleNotFoundException(UserTypeNotFoundException exception) {
-		logger.warn("User type not found: {}", exception.getMessage());
-		ErrorResponse response = new ErrorResponse(Instant.now(), exception.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
 
-		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-	}
-	
-	@ExceptionHandler(UserNotFoundException.class)
-	public ResponseEntity<ErrorResponse> handleNotFoundException(UserNotFoundException exception) {
-		logger.warn("User not found: {}", exception.getMessage());
-		ErrorResponse response = new ErrorResponse(Instant.now(), exception.getMessage());
+    @ExceptionHandler(UserTypeNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNotFoundException(UserTypeNotFoundException exception) {
+        logger.warn("User type not found: {}", exception.getMessage());
+        ErrorResponse response = new ErrorResponse(Instant.now(), exception.getMessage());
 
-		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-	}
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
 
-	@ExceptionHandler(UserTypeAlreadyExistsException.class)
-	public ResponseEntity<ErrorResponse> handleAlreadyExistsException(UserTypeAlreadyExistsException exception) {
-		logger.info("User type already exists: {}", exception.getMessage());
-		ErrorResponse response = new ErrorResponse(Instant.now(), exception.getMessage());
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNotFoundException(UserNotFoundException exception) {
+        logger.warn("User not found: {}", exception.getMessage());
+        ErrorResponse response = new ErrorResponse(Instant.now(), exception.getMessage());
 
-		return new ResponseEntity<>(response, HttpStatus.CONFLICT);
-	}
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
 
-	@ExceptionHandler(EmailAlreadyExistsException.class)
-	public ResponseEntity<ErrorResponse> handleAlreadyExistsException(EmailAlreadyExistsException exception) {
-		logger.info("Email already exists: {}", exception.getMessage());
-		ErrorResponse response = new ErrorResponse(Instant.now(), exception.getMessage());
+    @ExceptionHandler(UserTypeAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handleAlreadyExistsException(UserTypeAlreadyExistsException exception) {
+        logger.info("User type already exists: {}", exception.getMessage());
+        ErrorResponse response = new ErrorResponse(Instant.now(), exception.getMessage());
 
-		return new ResponseEntity<>(response, HttpStatus.CONFLICT);
-	}
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
 
-	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException exception) {
-		logger.info("Validation error: {}", exception.getMessage());
-		List<String> errors = exception.getBindingResult()
-			.getAllErrors()
-			.stream()
-			.map(DefaultMessageSourceResolvable::getDefaultMessage)
-			.toList();
-		return new ResponseEntity<>(new ErrorResponse(Instant.now(), "Validation Failed", errors),
-				HttpStatus.BAD_REQUEST);
-	}
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handleAlreadyExistsException(EmailAlreadyExistsException exception) {
+        logger.info("Email already exists: {}", exception.getMessage());
+        ErrorResponse response = new ErrorResponse(Instant.now(), exception.getMessage());
+
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException exception) {
+        logger.info("Validation error: {}", exception.getMessage());
+        List<String> errors = exception.getBindingResult()
+            .getAllErrors()
+            .stream()
+            .map(DefaultMessageSourceResolvable::getDefaultMessage)
+            .toList();
+        return new ResponseEntity<>(new ErrorResponse(Instant.now(), "Validation Failed", errors),
+                HttpStatus.BAD_REQUEST);
+    }
 
 }

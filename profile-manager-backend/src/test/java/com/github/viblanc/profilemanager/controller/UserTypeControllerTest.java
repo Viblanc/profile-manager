@@ -92,11 +92,10 @@ class UserTypeControllerTest {
             .andExpect(jsonPath("$.name", is("Admin")))
             .andReturn();
     }
-    
+
     @Test
     void shouldReturnNoContentOnUserTypeDelete() throws Exception {
-        this.mockMvc
-            .perform(delete("/api/user_types/{id}", USER_TYPE.id()))
+        this.mockMvc.perform(delete("/api/user_types/{id}", USER_TYPE.id()))
             .andExpect(status().isNoContent())
             .andReturn();
     }

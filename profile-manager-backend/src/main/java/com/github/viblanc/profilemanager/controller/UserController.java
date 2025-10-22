@@ -22,41 +22,41 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/users")
 public class UserController {
 
-	private UserService userService;
+    private UserService userService;
 
-	public UserController(UserService userService) {
-		this.userService = userService;
-	}
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
-	@GetMapping
-	public ResponseEntity<List<UserDto>> getAllUsers() {
-		return ResponseEntity.ok(userService.findAll());
-	}
+    @GetMapping
+    public ResponseEntity<List<UserDto>> getAllUsers() {
+        return ResponseEntity.ok(userService.findAll());
+    }
 
-	@GetMapping("{id}")
-	public ResponseEntity<UserDto> getUser(@PathVariable Long id) {
-		return ResponseEntity.ok(userService.getUser(id));
-	}
+    @GetMapping("{id}")
+    public ResponseEntity<UserDto> getUser(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.getUser(id));
+    }
 
-	@PostMapping
-	public ResponseEntity<UserDto> addUser(@RequestBody @Valid UserDto userDto) {
-		UserDto addedUser = userService.addUser(userDto);
+    @PostMapping
+    public ResponseEntity<UserDto> addUser(@RequestBody @Valid UserDto userDto) {
+        UserDto addedUser = userService.addUser(userDto);
 
-		return ResponseEntity.status(HttpStatus.CREATED).body(addedUser);
-	}
+        return ResponseEntity.status(HttpStatus.CREATED).body(addedUser);
+    }
 
-	@PutMapping("{id}")
-	public ResponseEntity<UserDto> editUser(@PathVariable Long id, @RequestBody @Valid UserDto userDto) {
-		UserDto updatedUser = userService.editUser(id, userDto);
+    @PutMapping("{id}")
+    public ResponseEntity<UserDto> editUser(@PathVariable Long id, @RequestBody @Valid UserDto userDto) {
+        UserDto updatedUser = userService.editUser(id, userDto);
 
-		return ResponseEntity.status(HttpStatus.CREATED).body(updatedUser);
-	}
+        return ResponseEntity.status(HttpStatus.CREATED).body(updatedUser);
+    }
 
-	@DeleteMapping("{id}")
-	public ResponseEntity<?> deleteUser(@PathVariable Long id) {
-		userService.removeUser(id);
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+        userService.removeUser(id);
 
-		return ResponseEntity.noContent().build();
-	}
+        return ResponseEntity.noContent().build();
+    }
 
 }

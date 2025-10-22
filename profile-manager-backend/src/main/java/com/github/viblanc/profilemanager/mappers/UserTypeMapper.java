@@ -11,11 +11,11 @@ import com.github.viblanc.profilemanager.entity.UserType;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface UserTypeMapper {
 
-	UserTypeMapper INSTANCE = Mappers.getMapper(UserTypeMapper.class);
+    UserTypeMapper INSTANCE = Mappers.getMapper(UserTypeMapper.class);
 
-	UserTypeDto toDto(UserType userType);
+    UserTypeDto toDto(UserType userType);
 
-	@Mapping(target = "users", ignore = true)
-	UserType toUserType(UserTypeDto dto);
+    @Mapping(target = "users", ignore = true)
+    UserType toUserType(UserTypeDto dto);
 
 }

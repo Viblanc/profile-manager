@@ -7,46 +7,46 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 public class ErrorResponse {
 
-	private Instant timestamp;
+    private Instant timestamp;
 
-	private String message;
+    private String message;
 
-	public ErrorResponse(Instant timestamp, String message) {
-		this.timestamp = timestamp;
-		this.message = message;
-	}
+    public ErrorResponse(Instant timestamp, String message) {
+        this.timestamp = timestamp;
+        this.message = message;
+    }
 
-	public ErrorResponse(Instant timestamp, String message, Object details) {
-		this.timestamp = timestamp;
-		this.message = message;
-		this.details = details;
-	}
+    public ErrorResponse(Instant timestamp, String message, Object details) {
+        this.timestamp = timestamp;
+        this.message = message;
+        this.details = details;
+    }
 
-	@JsonInclude(Include.NON_NULL)
-	private Object details;
+    @JsonInclude(Include.NON_NULL)
+    private Object details;
 
-	public Instant getTimestamp() {
-		return timestamp;
-	}
+    public Instant getTimestamp() {
+        return timestamp;
+    }
 
-	public void setTimestamp(Instant timestamp) {
-		this.timestamp = timestamp;
-	}
+    public void setTimestamp(Instant timestamp) {
+        this.timestamp = timestamp;
+    }
 
-	public String getMessage() {
-		return message;
-	}
+    public String getMessage() {
+        return message;
+    }
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
-	public Object getDetails() {
-		return details;
-	}
+    public Object getDetails() {
+        return details;
+    }
 
-	public void setDetails(Object details) {
-		this.details = details;
-	}
+    public void setDetails(Object details) {
+        this.details = details;
+    }
 
 }

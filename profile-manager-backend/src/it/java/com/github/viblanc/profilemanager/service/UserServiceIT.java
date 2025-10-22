@@ -50,7 +50,7 @@ class UserServiceIT {
 
     @AfterEach
     void tearDown() {
-    	userRepository.deleteAll();
+        userRepository.deleteAll();
         userTypeRepository.deleteAll();
     }
 

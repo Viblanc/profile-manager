@@ -14,67 +14,67 @@ import com.github.viblanc.profilemanager.repository.UserTypeRepository;
 @Service
 public class UserTypeServiceImpl implements UserTypeService {
 
-	private final UserTypeRepository repository;
+    private final UserTypeRepository repository;
 
-	private final UserTypeMapper mapper;
+    private final UserTypeMapper mapper;
 
-	public UserTypeServiceImpl(UserTypeRepository repository, UserTypeMapper mapper) {
-		this.repository = repository;
-		this.mapper = mapper;
-	}
+    public UserTypeServiceImpl(UserTypeRepository repository, UserTypeMapper mapper) {
+        this.repository = repository;
+        this.mapper = mapper;
+    }
 
-	@Override
-	public List<UserTypeDto> findAll() {
-		return this.repository.findAll().stream().map(mapper::toDto).toList();
-	}
+    @Override
+    public List<UserTypeDto> findAll() {
+        return this.repository.findAll().stream().map(mapper::toDto).toList();
+    }
 
-	@Override
-	public UserTypeDto getUserType(Long id) {
-		UserType userType = repository.findById(id)
-			.orElseThrow(() -> new UserTypeNotFoundException("User type with id " + id + " not found."));
+    @Override
+    public UserTypeDto getUserType(Long id) {
+        UserType userType = repository.findById(id)
+            .orElseThrow(() -> new UserTypeNotFoundException("User type with id " + id + " not found."));
 
-		return mapper.toDto(userType);
-	}
+        return mapper.toDto(userType);
+    }
 
-	@Override
-	public UserTypeDto addUserType(UserTypeDto userTypeDto) {
-		String name = userTypeDto.name();
+    @Override
+    public UserTypeDto addUserType(UserTypeDto userTypeDto) {
+        String name = userTypeDto.name();
 
-		// check if a user type with the same name already exists
-		if (repository.findByName(name).isPresent()) {
-			throw new UserTypeAlreadyExistsException("A user type with the name " + name + " already exists.");
-		}
-		else {
-			UserType newUserType = repository.save(mapper.toUserType(userTypeDto));
+        // check if a user type with the same name already exists
+        if (repository.findByName(name).isPresent()) {
+            throw new UserTypeAlreadyExistsException("A user type with the name " + name + " already exists.");
+        }
+        else {
+            UserType newUserType = repository.save(mapper.toUserType(userTypeDto));
 
-			return mapper.toDto(newUserType);
-		}
-	}
+            return mapper.toDto(newUserType);
+        }
+    }
 
-	@Override
-	public UserTypeDto editUserType(Long id, UserTypeDto userTypeDto) {
-		if (!id.equals(userTypeDto.id())) {
-			throw new IllegalArgumentException("IDs don't match.");
-		}
-		
-		UserType userType = repository.findById(id)
-			.orElseThrow(() -> new UserTypeNotFoundException("User type with id " + id + " not found."));
+    @Override
+    public UserTypeDto editUserType(Long id, UserTypeDto userTypeDto) {
+        if (!id.equals(userTypeDto.id())) {
+            throw new IllegalArgumentException("IDs don't match.");
+        }
 
-		// check if new name is available
-		if (!userType.getName().equals(userTypeDto.name()) && repository.findByName(userTypeDto.name()).isPresent()) {
-			throw new UserTypeAlreadyExistsException(
-					"A user type with the name " + userTypeDto.name() + " already exists.");
-		}
+        UserType userType = repository.findById(id)
+            .orElseThrow(() -> new UserTypeNotFoundException("User type with id " + id + " not found."));
 
-		userType.setName(userTypeDto.name());
-		repository.save(userType);
+        // check if new name is available
+        if (!userType.getName().equals(userTypeDto.name()) && repository.findByName(userTypeDto.name()).isPresent()) {
+            throw new UserTypeAlreadyExistsException(
+                    "A user type with the name " + userTypeDto.name() + " already exists.");
+        }
 
-		return mapper.toDto(userType);
-	}
+        userType.setName(userTypeDto.name());
+        repository.save(userType);
 
-	@Override
-	public void deleteUserType(Long id) {
-		repository.deleteById(id);
-	}
+        return mapper.toDto(userType);
+    }
+
+    @Override
+    public void deleteUserType(Long id) {
+        repository.deleteById(id);
+    }
 
 }

@@ -7,12 +7,12 @@ import org.testcontainers.junit.jupiter.Container;
 
 public interface ContainerConfig {
 
-	@Container
-	PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:17-alpine");
+    @Container
+    PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:17-alpine");
 
-	@DynamicPropertySource
-	static void configureProperties(DynamicPropertyRegistry registry) {
-		registry.add("allowed.origins", () -> "");
-	}
+    @DynamicPropertySource
+    static void configureProperties(DynamicPropertyRegistry registry) {
+        registry.add("allowed.origins", () -> "");
+    }
 
 }

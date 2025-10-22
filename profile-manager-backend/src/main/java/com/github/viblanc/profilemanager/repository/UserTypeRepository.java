@@ -7,6 +7,6 @@ import com.github.viblanc.profilemanager.entity.UserType;
 
 public interface UserTypeRepository extends JpaRepository<UserType, Long> {
 
-	Optional<UserType> findByName(String name);
+    Optional<UserType> findByName(String name);
 
 }

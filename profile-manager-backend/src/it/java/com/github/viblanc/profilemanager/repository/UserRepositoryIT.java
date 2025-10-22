@@ -24,12 +24,12 @@ class UserRepositoryIT {
 
     @Autowired
     private TestEntityManager entityManager;
-    
+
     @Test
     void testFindByEmail() {
         UserType userType = new UserType(null, "Admin", null);
         entityManager.persist(userType);
-        
+
         User user = new User(null, "John", "Doe", "john@doe.mail", userType);
         entityManager.persist(user);
 

@@ -175,7 +175,7 @@ class UserControllerIT {
             .assertThat()
             .body("message", equalTo("User with email john@doe.mail already exists."));
     }
-    
+
     @Test
     void shouldGetError_whenAddingUser_withUnknownUserType() {
         UserDto newUser = new UserDto(null, "Jean", "Dupont", "john@doe.mail", new UserTypeDto(null, "Guest"));
@@ -190,10 +190,10 @@ class UserControllerIT {
             .assertThat()
             .body("message", equalTo("User type with name Guest does not exist."));
     }
-    
+
     @Test
     void shouldGetError_whenUpdatingUser_withDifferentIds() {
-    	User user = new User(null, "John", "Doe", "john@doe.mail", userType);
+        User user = new User(null, "John", "Doe", "john@doe.mail", userType);
         userRepository.save(user);
 
         UserDto updatedUser = new UserDto(user.getId() + 1L, "Jean", "Dupont", "jdupont@mail.fr", userTypeDto);
@@ -208,7 +208,7 @@ class UserControllerIT {
             .assertThat()
             .body("message", equalTo("IDs don't match."));
     }
-    
+
     @Test
     void shouldGetError_whenUpdatingUser_notFound() {
         UserDto newUser = new UserDto(1L, "Jean", "Dupont", "john@doe.mail", userTypeDto);
@@ -223,10 +223,10 @@ class UserControllerIT {
             .assertThat()
             .body("message", equalTo("User with id 1 not found."));
     }
-    
+
     @Test
     void shouldGetError_whenUpdatingUser_withEmailAlreadyExists() {
-    	User user = new User(null, "John", "Doe", "john@doe.mail", userType);
+        User user = new User(null, "John", "Doe", "john@doe.mail", userType);
         userRepository.save(user);
         User user2 = new User(null, "Jeanne", "Dupont", "jdupont@mail.fr", userType);
         userRepository.save(user2);
@@ -243,13 +243,14 @@ class UserControllerIT {
             .assertThat()
             .body("message", equalTo("User with email jdupont@mail.fr already exists."));
     }
-    
+
     @Test
     void shouldGetError_whenUpdatingUser_withUnknownUserType() {
-    	User user = new User(null, "John", "Doe", "john@doe.mail", userType);
+        User user = new User(null, "John", "Doe", "john@doe.mail", userType);
         userRepository.save(user);
 
-        UserDto updatedUser = new UserDto(user.getId(), "Jean", "Dupont", "john@doe.mail", new UserTypeDto(null, "Guest"));
+        UserDto updatedUser = new UserDto(user.getId(), "Jean", "Dupont", "john@doe.mail",
+                new UserTypeDto(null, "Guest"));
 
         given().contentType(ContentType.JSON)
             .with()

@@ -144,10 +144,10 @@ class UserTypeControllerIT {
             .assertThat()
             .body("message", equalTo("A user type with the name Admin already exists."));
     }
-    
+
     @Test
     void shouldGetError_whenUpdatingUserType_withDifferentIds() {
-    	UserType userType = new UserType(null, "Admin", null);
+        UserType userType = new UserType(null, "Admin", null);
         userTypeRepository.save(userType);
         UserTypeDto updatedUserType = new UserTypeDto(2L, "User");
 
@@ -161,7 +161,7 @@ class UserTypeControllerIT {
             .assertThat()
             .body("message", equalTo("IDs don't match."));
     }
-    
+
     @Test
     void shouldGetError_whenUpdatingUserType_notFound() {
         UserTypeDto updatedUserType = new UserTypeDto(1L, "User");
@@ -176,7 +176,7 @@ class UserTypeControllerIT {
             .assertThat()
             .body("message", equalTo("User type with id 1 not found."));
     }
-    
+
     @Test
     void shouldGetError_whenUpdatingUserType_withNameAlreadyExists() {
         UserType userType = new UserType(null, "Admin", null);
