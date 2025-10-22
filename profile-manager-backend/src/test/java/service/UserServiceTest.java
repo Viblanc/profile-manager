@@ -73,7 +73,7 @@ class UserServiceTest {
 
     @Test
     void testAddUser() {
-    	when(userTypeRepository.findByName(anyString())).thenReturn(Optional.of(USER_TYPE));
+        when(userTypeRepository.findByName(anyString())).thenReturn(Optional.of(USER_TYPE));
         when(userRepository.save(any(User.class))).thenReturn(USER);
 
         UserDto actual = userService.addUser(USER_DTO);
@@ -83,7 +83,7 @@ class UserServiceTest {
 
     @Test
     void testUpdateUserType() {
-    	when(userTypeRepository.findByName(anyString())).thenReturn(Optional.of(USER_TYPE));
+        when(userTypeRepository.findByName(anyString())).thenReturn(Optional.of(USER_TYPE));
         when(userRepository.findById(USER.getId())).thenReturn(Optional.of(USER));
         when(userRepository.save(any(User.class))).thenReturn(USER);
 
