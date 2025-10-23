@@ -9,18 +9,10 @@ cd ./profile-manager-backend
 
 echo
 echo -------------------------------------------------------
-echo "Cleaning up backend..."
-echo -------------------------------------------------------
-echo
-
-./mvnw clean
-
-echo
-echo -------------------------------------------------------
 echo "Running unit tests..."
 echo -------------------------------------------------------
 echo
-./mvnw test
+./mvnw clean test
 if [[ "$?" -ne 0 ]] ; then
   echo
   echo "❌ ${RED}Failure occurred during unit tests...${NC}"; exit $rc
@@ -36,7 +28,7 @@ echo -------------------------------------------------------
 echo "Running integration tests..."
 echo -------------------------------------------------------
 echo
-./mvnw verify
+./mvnw clean verify
 if [[ "$?" -ne 0 ]] ; then
   echo
   echo "❌ ${RED}Failure occurred during integration tests...${NC}"; exit $rc
@@ -46,13 +38,6 @@ else
   echo "✅ ${GREEN}Integration tests passed!${NC}"
   echo
 fi
-
-echo
-echo -------------------------------------------------------
-echo "Run mvn install..."
-echo -------------------------------------------------------
-echo
-./mvnw install -Dmaven.test.skip=true
 
 # build with docker-compose
 cd ../
