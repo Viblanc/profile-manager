@@ -7,4 +7,4 @@ You need to meet the following requirements:
 
 Running the provided `build-and-deploy.sh` script should get you up and running!
 
-You can then access the application at `http://localhost:4200`.
+You can then access the application at `http://localhost:9000`.

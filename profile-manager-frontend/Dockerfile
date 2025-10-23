@@ -12,4 +12,6 @@ FROM nginx:stable-alpine
 COPY --from=build /app/dist/profile-manager-frontend/browser /usr/share/nginx/html
 COPY --from=build /app/nginx.conf /etc/nginx/conf.d/default.conf
 
+EXPOSE 9000
+
 CMD ["nginx", "-g", "daemon off;"]

@@ -8,13 +8,13 @@ services:
       - 8080:8080
     environment:
       SPRING_DATASOURCE_URL: "jdbc:postgresql://profilemanager-db:5432/profilemanager-db"
-      ALLOWED_ORIGINS: "http://localhost:4200"
+      ALLOWED_ORIGINS: "http://localhost:9000"
 
   frontend:
     build: ./profile-manager-frontend/.
     container_name: profilemanager-angular
     ports:
-      - 4200:80
+      - 9000:9000
 
   profilemanager-db:
     container_name: profilemanager-db
