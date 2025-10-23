@@ -1,0 +1,7 @@
+<dialog #myDialog (click)="this.closeModal($event)">
+    <ng-content />
+    <div class="buttons-container">
+        <button (click)="confirm.emit(resourceId())">Confirm</button>
+        <button class="cancel-btn" (click)="resourceId.set(-1)">Cancel</button>
+    </div>
+</dialog>

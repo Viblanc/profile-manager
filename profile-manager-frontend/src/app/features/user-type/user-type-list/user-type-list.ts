@@ -8,10 +8,11 @@ import { TableContainer } from '../../../shared/table-container/table-container'
 import { TableHeadings } from '../../../shared/table-container/table-headings';
 import { PageTitle } from '../../../core/page-title/page-title';
 import { BigButton } from '../../../shared/big-button/big-button';
+import { Modal } from '../../../shared/modal/modal';
 
 @Component({
   selector: 'app-user-type-list',
-  imports: [RouterLink, UserTypeRow, TableContainer, PageTitle, BigButton],
+  imports: [RouterLink, UserTypeRow, TableContainer, PageTitle, BigButton, Modal],
   templateUrl: './user-type-list.html',
   styleUrl: './user-type-list.css',
 })
@@ -19,6 +20,7 @@ export class UserTypeList {
   private userTypeApi = inject(UserTypeApi);
   private router = inject(Router);
   private destroyRef = inject(DestroyRef);
+  modalUserTypeId = signal<number>(-1);
   userTypes = signal<UserType[]>([]);
   headings: TableHeadings<UserType> = {
     sortable: {
@@ -57,6 +59,7 @@ export class UserTypeList {
   removeUserType(id: number) {
     const subscription = this.userTypeApi.removeUserType(id).subscribe(() => {
       this.userTypes.update((old) => old.filter((u) => u.id !== id));
+      this.modalUserTypeId.set(-1);
     });
 
     this.destroyRef.onDestroy(() => {

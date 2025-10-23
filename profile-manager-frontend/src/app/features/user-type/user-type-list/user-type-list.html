@@ -1,14 +1,20 @@
 <app-page-title title="User Types List"></app-page-title>
-<div class="container w-80">
-    <button bigButton routerLink="add">Add a user type</button>
+<div class="container-fluid">
+    <a bigButton routerLink="add">Add a user type</a>
 
     <app-table-container [data]="userTypes()" [headings]="headings" [rowRef]="rowRef"
         [noContentRef]="noContentRef"></app-table-container>
 </div>
 
+<app-modal [(resourceId)]="this.modalUserTypeId" (confirm)="this.removeUserType($event)">
+    <p>Removing this user type will delete all users sharing this user type.</p>
+
+    <p>Are you sure ?</p>
+</app-modal>
+
 <ng-template #rowRef let-userType="data">
     <app-user-type-row [userType]="userType" (edit)="this.goToEditPage(userType)"
-        (delete)="this.removeUserType(userType.id)"></app-user-type-row>
+        (delete)="this.modalUserTypeId.set(userType.id)"></app-user-type-row>
 </ng-template>
 
 <ng-template #noContentRef>
