@@ -1,7 +1,7 @@
 import { Component, computed, DestroyRef, inject, input, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserApi } from '../user-api';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Observable } from 'rxjs';
 import { User } from '../user';
 import { UserType } from '../../user-type/user-type';
@@ -11,7 +11,7 @@ import { BigButton } from '../../../shared/big-button/big-button';
 
 @Component({
   selector: 'app-new-user',
-  imports: [ReactiveFormsModule, PageTitle, BigButton],
+  imports: [ReactiveFormsModule, PageTitle, BigButton, RouterLink],
   templateUrl: './new-user.html',
   styleUrl: './new-user.css',
 })
@@ -39,7 +39,7 @@ export class NewUser implements OnInit {
         ...this.user(),
         userType: this.user()?.userType.name,
       });
-    } else {
+    } else if (this.userTypes().length) {
       this.form.patchValue({
         userType: this.userTypes()[0].name,
       });

@@ -1,5 +1,7 @@
 <app-page-title title="Add / Edit a user"></app-page-title>
-<section class="section-content">
+
+<div class="container-fluid">
+    @if (userTypes().length) {
     <form (ngSubmit)="onSubmit()" [formGroup]="form">
         <input class="form-control" type="text" placeholder="Last Name" formControlName="lastName" />
         @if (lastName.invalid && (lastName.dirty || lastName.touched)) {
@@ -55,4 +57,11 @@
         </div>
         }
     </form>
-</section>
+    } @else {
+    <div class="msg-container alert alert-warning my-4">
+        <p>You cannot add a new user without a type...</p>
+        Start by adding some user types!
+    </div>
+    <a bigButton [routerLink]="['/', 'user_types', 'add']">Add a user type</a>
+    }
+</div>

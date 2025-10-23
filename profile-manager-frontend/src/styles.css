@@ -6,12 +6,57 @@ body {
   background-color: #f3f3f3ff !important;
 }
 
-.btn {
-  font-weight: bold !important;
-}
-
 .error-message {
   font-size: 1.5rem;
   padding: 5px;
   border-radius: 4px;
+}
+
+.msg-container {
+  font-size: 1.5rem;
+  width: 33vw;
+  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
+}
+
+td {
+  border-bottom: 1px solid black !important;
+  border-right: 1px solid black !important;
+  text-align: center;
+}
+
+.hide-cell-border {
+  border-right: none !important;
+}
+
+td > a {
+  font-weight: bold;
+  display: flex;
+  flex-grow: 1;
+  margin: 0.5rem 0.5rem;
+  padding: 0.5rem 3rem;
+  border-radius: 4px;
+  color: white;
+  text-align: center;
+  justify-content: center;
+  cursor: pointer;
+  text-decoration: none;
+  transition: 0.3s ease-in-out;
+}
+
+td > a:hover {
+  box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.1);
+}
+
+.view-button {
+  background-color: #80a9beff;
+}
+
+.edit-button {
+  background-color: #708090ff;
+}
+
+.delete-button {
+  background-color: #8f0000ff;
 }
