@@ -5,6 +5,6 @@ export type TableHeadings<T> = {
       cmp: (a: T, b: T) => -1 | 0 | 1;
     };
   };
-  other?: string[];
+  other?: { title: string; colspan?: number }[];
   keys: Array<keyof T>;
 };

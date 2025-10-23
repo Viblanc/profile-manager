@@ -33,7 +33,7 @@ export class UserTypeList {
         cmp: (a, b) => compare(a.name, b.name),
       },
     },
-    other: ['Actions'],
+    other: [{ title: 'Actions', colspan: 2 }],
     keys: ['id', 'name'],
   };
 

@@ -2,11 +2,7 @@
     <tr>
         <td>{{ userType().id }}</td>
         <td>{{ userType().name }}</td>
-        <td>
-            <div class="d-inline-flex gap-1">
-                <a (click)="edit.emit(userType())" class="btn btn-lg btn-warning">Edit</a>
-                <a (click)="delete.emit(userType())" class="btn btn-lg btn-danger">Remove</a>
-            </div>
-        </td>
+        <td class="hide-cell-border"><a (click)="edit.emit(userType())" class="edit-button">Edit</a></td>
+        <td class="hide-cell-border"><a (click)="delete.emit(userType())" class="delete-button">Remove</a></td>
     </tr>
 </ng-template>

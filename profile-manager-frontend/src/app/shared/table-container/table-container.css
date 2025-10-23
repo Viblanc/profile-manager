@@ -1,8 +1,20 @@
-table {
-  font-size: 1.5rem;
+.table-container {
+  overflow-x: auto;
 }
 
-#my-table th {
+.my-table {
+  font-size: 1.5rem;
+  margin: 0 auto;
+  text-align: center;
+  background-color: white;
+  min-width: 33vw;
+  border-collapse: collapse;
+  border: 1px solid black;
+}
+
+.my-table th {
   background-color: #890e54ff;
   color: white;
+  border: 1px solid black;
+  padding: 1rem 3rem;
 }

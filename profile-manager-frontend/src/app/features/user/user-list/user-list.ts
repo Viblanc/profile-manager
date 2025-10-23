@@ -38,7 +38,7 @@ export class UserList implements OnInit {
         cmp: (a, b) => compare(a.userType.name, b.userType.name),
       },
     },
-    other: ['Actions'],
+    other: [{ title: 'Actions', colspan: 3 }],
     keys: ['userType', 'lastName', 'firstName', 'email'],
   };
 

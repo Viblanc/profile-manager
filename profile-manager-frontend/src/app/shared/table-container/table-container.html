@@ -1,26 +1,28 @@
 @if (data().length) {
-<table id="my-table" class="table table-bordered text-center border-black my-table">
-    <thead>
-        <tr>
-            @for (key of headingsKeys(); track key) {
-            @let selected = selectedColumn() === key;
-            <th (click)="sortData(key)" class="table-bordered" role="button">
-                {{ sortableHeadings()[key].title }} {{selected ? (sortAscending() ? '↓' : '↑') : ''}}
-            </th>
+<div class="table-container">
+    <table id="my-table" class="my-table">
+        <thead>
+            <tr>
+                @for (key of headingsKeys(); track key) {
+                @let selected = selectedColumn() === key;
+                <th (click)="sortData(key)" role="button">
+                    {{ sortableHeadings()[key].title }} {{selected ? (sortAscending() ? '↓' : '↑') : ''}}
+                </th>
+                }
+                @for (heading of otherHeadings(); track $index) {
+                <th [colSpan]="heading.colspan">
+                    {{ heading.title }}
+                </th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @for (item of sortedData(); track item.id) {
+            <ng-container [ngTemplateOutlet]="rowRef()" [ngTemplateOutletContext]="{ data: item }"></ng-container>
             }
-            @for (title of otherHeadings(); track $index) {
-            <th class="table-bordered">
-                {{ title }}
-            </th>
-            }
-        </tr>
-    </thead>
-    <tbody>
-        @for (item of sortedData(); track item.id) {
-        <ng-container [ngTemplateOutlet]="rowRef()" [ngTemplateOutletContext]="{ data: item }"></ng-container>
-        }
-    </tbody>
-</table>
+        </tbody>
+    </table>
+</div>
 } @else {
 <ng-container [ngTemplateOutlet]="noContentRef()"></ng-container>
 }
