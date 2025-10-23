@@ -1,11 +1,8 @@
 package com.github.viblanc.profilemanager.controller;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.Assert.assertEquals;
-
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import java.util.List;
@@ -31,9 +28,12 @@ class UserTypeControllerIT {
     @Autowired
     private UserTypeRepository userTypeRepository;
 
+    private UserType userType;
+
     @BeforeEach
     void setUp() {
         RestAssured.baseURI = "http://localhost:" + port;
+        userType = new UserType(null, "Admin", null);
         userTypeRepository.deleteAll();
     }
 
@@ -53,13 +53,11 @@ class UserTypeControllerIT {
 
         List<UserTypeDto> expected = userTypes.stream().map(u -> new UserTypeDto(u.getId(), u.getName())).toList();
 
-        assertAll(() -> assertEquals(2, actual.size()), () -> assertEquals(expected, actual),
-                () -> assertThat(expected, equalTo(actual)));
+        assertThat(actual).hasSize(2).containsExactlyElementsOf(expected);
     }
 
     @Test
     void shouldGetUserTypeById() {
-        UserType userType = new UserType(null, "Admin", null);
         userTypeRepository.save(userType);
 
         given().contentType(ContentType.JSON)
@@ -72,11 +70,11 @@ class UserTypeControllerIT {
 
     @Test
     void shouldAddUserType() {
-        UserTypeDto userType = new UserTypeDto(null, "User");
+        UserTypeDto userTypeDto = new UserTypeDto(null, "User");
 
         given().contentType(ContentType.JSON)
             .with()
-            .body(userType)
+            .body(userTypeDto)
             .when()
             .post("/api/user_types")
             .then()
@@ -87,27 +85,26 @@ class UserTypeControllerIT {
 
     @Test
     void shouldUpdateUserType() {
-        UserType userType = new UserType(null, "User", null);
         userTypeRepository.save(userType);
-        final int id = Math.toIntExact(userType.getId());
         final String userTypeName = "Admin";
         UserTypeDto newUserType = new UserTypeDto(userType.getId(), userTypeName);
 
-        given().contentType(ContentType.JSON)
+        UserTypeDto actual = given().contentType(ContentType.JSON)
             .with()
             .body(newUserType)
             .when()
             .put("/api/user_types/{id}", userType.getId())
             .then()
             .statusCode(201)
-            .assertThat()
-            .body("id", equalTo(id))
-            .body("name", equalTo(userTypeName));
+            .extract()
+            .as(UserTypeDto.class);
+
+        assertThat(actual).extracting(UserTypeDto::id, UserTypeDto::name)
+            .containsExactly(userType.getId(), userTypeName);
     }
 
     @Test
     void shouldDeleteUserType() {
-        UserType userType = new UserType(null, "User", null);
         userTypeRepository.save(userType);
 
         given().contentType(ContentType.JSON)
@@ -130,9 +127,8 @@ class UserTypeControllerIT {
 
     @Test
     void shouldGetError_whenAddingUserType_withNameAlreadyExists() {
-        UserType userType = new UserType(null, "Admin", null);
         userTypeRepository.save(userType);
-        UserTypeDto newUserType = new UserTypeDto(null, "Admin");
+        UserTypeDto newUserType = new UserTypeDto(null, userType.getName());
 
         given().contentType(ContentType.JSON)
             .with()
@@ -142,12 +138,11 @@ class UserTypeControllerIT {
             .then()
             .statusCode(409)
             .assertThat()
-            .body("message", equalTo("A user type with the name Admin already exists."));
+            .body("message", equalTo("A user type with the name " + userType.getName() + " already exists."));
     }
 
     @Test
     void shouldGetError_whenUpdatingUserType_withDifferentIds() {
-        UserType userType = new UserType(null, "Admin", null);
         userTypeRepository.save(userType);
         UserTypeDto updatedUserType = new UserTypeDto(2L, "User");
 
@@ -179,7 +174,6 @@ class UserTypeControllerIT {
 
     @Test
     void shouldGetError_whenUpdatingUserType_withNameAlreadyExists() {
-        UserType userType = new UserType(null, "Admin", null);
         userTypeRepository.save(userType);
         // add user type with name "User"
         userTypeRepository.save(new UserType(null, "User", null));

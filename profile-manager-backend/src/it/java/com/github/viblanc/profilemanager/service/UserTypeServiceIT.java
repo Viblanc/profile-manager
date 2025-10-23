@@ -1,10 +1,6 @@
 package com.github.viblanc.profilemanager.service;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertAll;
-
+import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -40,8 +36,7 @@ class UserTypeServiceIT {
         List<UserTypeDto> expected = userTypes.stream().map(u -> new UserTypeDto(u.getId(), u.getName())).toList();
         List<UserTypeDto> actual = userTypeService.findAll();
 
-        assertAll(() -> assertEquals(2, actual.size()), () -> assertEquals(expected, actual),
-                () -> assertThat(expected, equalTo(actual)));
+        assertThat(actual).hasSize(2).containsExactlyElementsOf(expected);
     }
 
     @Test
@@ -49,18 +44,19 @@ class UserTypeServiceIT {
         UserType userType = new UserType(null, "Admin", null);
         userTypeRepository.save(userType);
 
-        UserTypeDto userTypeDto = userTypeService.getUserType(userType.getId());
+        UserTypeDto expected = new UserTypeDto(userType.getId(), "Admin");
+        UserTypeDto actual = userTypeService.getUserType(userType.getId());
 
-        assertAll(() -> assertEquals(userType.getId(), userTypeDto.id()),
-                () -> assertEquals(userType.getName(), userTypeDto.name()));
+        assertThat(actual).extracting(UserTypeDto::id, UserTypeDto::name)
+            .containsExactly(expected.id(), expected.name());
     }
 
     @Test
     void shouldAddUserType() {
         UserTypeDto userType = new UserTypeDto(null, "User");
-        UserTypeDto newUserType = userTypeService.addUserType(userType);
+        UserTypeDto actual = userTypeService.addUserType(userType);
 
-        assertAll(() -> assertEquals(userType.name(), newUserType.name()));
+        assertThat(actual.name()).isEqualTo("User");
     }
 
     @Test
@@ -69,10 +65,11 @@ class UserTypeServiceIT {
         UserType userType = new UserType(null, "User", null);
         userTypeRepository.save(userType);
         // change the name of the user type to 'Admin'
-        UserTypeDto newUserTypeDto = new UserTypeDto(userType.getId(), "Admin");
-        UserTypeDto updatedUserType = userTypeService.editUserType(userType.getId(), newUserTypeDto);
+        UserTypeDto expected = new UserTypeDto(userType.getId(), "Admin");
+        UserTypeDto actual = userTypeService.editUserType(userType.getId(), expected);
 
-        assertEquals(newUserTypeDto, updatedUserType);
+        assertThat(actual).extracting(UserTypeDto::id, UserTypeDto::name)
+            .containsExactly(expected.id(), expected.name());
     }
 
     @Test
@@ -83,7 +80,7 @@ class UserTypeServiceIT {
 
         userTypeService.deleteUserType(id);
 
-        assertEquals(true, userTypeRepository.findById(id).isEmpty());
+        assertThat(userTypeRepository.findById(id)).isEmpty();
     }
 
 }

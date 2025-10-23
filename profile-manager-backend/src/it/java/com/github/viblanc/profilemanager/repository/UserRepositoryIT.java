@@ -1,8 +1,6 @@
 package com.github.viblanc.profilemanager.repository;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertAll;
-
+import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -34,7 +32,8 @@ class UserRepositoryIT {
         entityManager.persist(user);
 
         Optional<User> actual = userRepository.findByEmail("john@doe.mail");
-        assertAll(() -> assertEquals(true, actual.isPresent()), () -> assertEquals(user, actual.get()));
+
+        assertThat(actual).isPresent().hasValue(user);
     }
 
 }

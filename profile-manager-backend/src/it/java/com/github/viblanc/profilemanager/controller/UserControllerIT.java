@@ -1,11 +1,8 @@
 package com.github.viblanc.profilemanager.controller;
 
 import static io.restassured.RestAssured.given;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertAll;
-
 import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
@@ -43,15 +40,24 @@ class UserControllerIT {
     @Autowired
     private UserMapper mapper;
 
-    private UserType userType = new UserType(null, "Admin", null);
+    private User user;
+    
+    private UserDto userDto;
+    
+    private UserType userType;
 
     private UserTypeDto userTypeDto;
 
     @BeforeEach
     void setUp() {
         RestAssured.baseURI = "http://localhost:" + port;
+        
+        userType = new UserType(null, "Admin", null);
+        user = new User(null, "John", "Doe", "john@doe.mail", userType);
         userTypeRepository.save(userType);
+        
         userTypeDto = new UserTypeDto(userType.getId(), userType.getName());
+        userDto = new UserDto(null, "John", "Doe", "john@doe.mail", userTypeDto);
     }
 
     @AfterEach
@@ -77,13 +83,11 @@ class UserControllerIT {
 
         List<UserDto> expected = users.stream().map(mapper::toDto).toList();
 
-        assertAll(() -> assertEquals(2, actual.size()), () -> assertEquals(expected, actual),
-                () -> assertThat(expected, equalTo(actual)));
+        assertThat(actual).hasSize(2).containsAll(expected);
     }
 
     @Test
     void shouldGetUserById() {
-        User user = new User(null, "John", "Doe", "john@doe.mail", userType);
         userRepository.save(user);
 
         given().contentType(ContentType.JSON)
@@ -97,7 +101,7 @@ class UserControllerIT {
 
     @Test
     void shouldAddUser() {
-        UserDto expected = new UserDto(null, "John", "Doe", "john@doe.mail", userTypeDto);
+        UserDto expected = userDto;
 
         UserDto actual = given().contentType(ContentType.JSON)
             .with()
@@ -109,39 +113,32 @@ class UserControllerIT {
             .extract()
             .as(UserDto.class);
 
-        assertAll(() -> assertEquals(expected.firstName(), actual.firstName()),
-                () -> assertEquals(expected.lastName(), actual.lastName()),
-                () -> assertEquals(expected.email(), actual.email()),
-                () -> assertEquals(expected.userType().name(), actual.userType().name()));
+        assertThat(actual).extracting(UserDto::firstName, UserDto::lastName, UserDto::email, UserDto::userType)
+            .containsExactly(expected.firstName(), expected.lastName(), expected.email(), expected.userType());
     }
 
     @Test
     void shouldUpdateUserType() {
-        User user = new User(null, "John", "Doe", "john@doe.mail", userType);
         userRepository.save(user);
 
-        final int id = Math.toIntExact(user.getId());
         UserDto expected = new UserDto(user.getId(), "Jane", "Doe", "jane@doe.mail", userTypeDto);
 
         UserDto actual = given().contentType(ContentType.JSON)
             .with()
             .body(expected)
             .when()
-            .put("/api/users/{id}", id)
+            .put("/api/users/{id}", user.getId())
             .then()
             .statusCode(201)
             .extract()
             .as(UserDto.class);
 
-        assertAll(() -> assertEquals(expected.firstName(), actual.firstName()),
-                () -> assertEquals(expected.lastName(), actual.lastName()),
-                () -> assertEquals(expected.email(), actual.email()),
-                () -> assertEquals(expected.userType().name(), actual.userType().name()));
+        assertThat(actual).extracting(UserDto::firstName, UserDto::lastName, UserDto::email, UserDto::userType)
+            .containsExactly(expected.firstName(), expected.lastName(), expected.email(), expected.userType());
     }
 
     @Test
     void shouldDeleteUserType() {
-        User user = new User(null, "John", "Doe", "john@doe.mail", userType);
         userRepository.save(user);
 
         given().contentType(ContentType.JSON).when().delete("/api/users/{id}", user.getId()).then().statusCode(204);
@@ -160,10 +157,9 @@ class UserControllerIT {
 
     @Test
     void shouldGetError_whenAddingUser_withEmailAlreadyExists() {
-        User user = new User(null, "John", "Doe", "john@doe.mail", userType);
         userRepository.save(user);
 
-        UserDto newUser = new UserDto(null, "Jean", "Dupont", "john@doe.mail", userTypeDto);
+        UserDto newUser = new UserDto(null, "Jean", "Dupont", user.getEmail(), userTypeDto);
 
         given().contentType(ContentType.JSON)
             .with()
@@ -173,7 +169,7 @@ class UserControllerIT {
             .then()
             .statusCode(409)
             .assertThat()
-            .body("message", equalTo("User with email john@doe.mail already exists."));
+            .body("message", equalTo("User with email " + user.getEmail() + " already exists."));
     }
 
     @Test
@@ -193,7 +189,6 @@ class UserControllerIT {
 
     @Test
     void shouldGetError_whenUpdatingUser_withDifferentIds() {
-        User user = new User(null, "John", "Doe", "john@doe.mail", userType);
         userRepository.save(user);
 
         UserDto updatedUser = new UserDto(user.getId() + 1L, "Jean", "Dupont", "jdupont@mail.fr", userTypeDto);
@@ -226,7 +221,6 @@ class UserControllerIT {
 
     @Test
     void shouldGetError_whenUpdatingUser_withEmailAlreadyExists() {
-        User user = new User(null, "John", "Doe", "john@doe.mail", userType);
         userRepository.save(user);
         User user2 = new User(null, "Jeanne", "Dupont", "jdupont@mail.fr", userType);
         userRepository.save(user2);
@@ -246,7 +240,6 @@ class UserControllerIT {
 
     @Test
     void shouldGetError_whenUpdatingUser_withUnknownUserType() {
-        User user = new User(null, "John", "Doe", "john@doe.mail", userType);
         userRepository.save(user);
 
         UserDto updatedUser = new UserDto(user.getId(), "Jean", "Dupont", "john@doe.mail",

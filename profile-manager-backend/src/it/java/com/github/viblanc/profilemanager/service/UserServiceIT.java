@@ -1,10 +1,6 @@
 package com.github.viblanc.profilemanager.service;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertAll;
-
+import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
@@ -63,8 +59,7 @@ class UserServiceIT {
         List<UserDto> expected = users.stream().map(mapper::toDto).toList();
         List<UserDto> actual = userService.findAll();
 
-        assertAll(() -> assertEquals(2, actual.size()), () -> assertEquals(expected, actual),
-                () -> assertThat(expected, equalTo(actual)));
+        assertThat(actual).hasSize(2).containsExactlyElementsOf(expected);
     }
 
     @Test
@@ -73,7 +68,7 @@ class UserServiceIT {
         UserDto expected = mapper.toDto(userRepository.save(user));
         UserDto actual = userService.getUser(expected.id());
 
-        assertEquals(expected, actual);
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
@@ -81,10 +76,8 @@ class UserServiceIT {
         UserDto expected = new UserDto(null, "John", "Doe", "john@doe.mail", userTypeDto);
         UserDto actual = userService.addUser(expected);
 
-        assertAll(() -> assertEquals(expected.firstName(), actual.firstName()),
-                () -> assertEquals(expected.lastName(), actual.lastName()),
-                () -> assertEquals(expected.email(), actual.email()),
-                () -> assertEquals(expected.userType().name(), actual.userType().name()));
+        assertThat(actual).extracting(UserDto::firstName, UserDto::lastName, UserDto::email, UserDto::userType)
+            .containsExactly(expected.firstName(), expected.lastName(), expected.email(), expected.userType());
     }
 
     @Test
@@ -93,10 +86,8 @@ class UserServiceIT {
         UserDto expected = new UserDto(user.getId(), "Jane", "Doe", "jane@doe.mail", userTypeDto);
         UserDto actual = userService.editUser(user.getId(), expected);
 
-        assertAll(() -> assertEquals(expected.firstName(), actual.firstName()),
-                () -> assertEquals(expected.lastName(), actual.lastName()),
-                () -> assertEquals(expected.email(), actual.email()),
-                () -> assertEquals(expected.userType().name(), actual.userType().name()));
+        assertThat(actual).extracting(UserDto::firstName, UserDto::lastName, UserDto::email, UserDto::userType)
+            .containsExactly(expected.firstName(), expected.lastName(), expected.email(), expected.userType());
     }
 
     @Test
@@ -106,7 +97,7 @@ class UserServiceIT {
         Long id = user.getId();
         userService.removeUser(id);
 
-        assertEquals(true, userRepository.findById(id).isEmpty());
+        assertThat(userRepository.findById(id)).isEmpty();
     }
 
 }
