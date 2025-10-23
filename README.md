@@ -6,3 +6,5 @@ You need to meet the following requirements:
 - Docker (and Docker Compose)
 
 Running the provided `build-and-deploy.sh` script should get you up and running!
+
+You can then access the application at `http://localhost:4200`.
