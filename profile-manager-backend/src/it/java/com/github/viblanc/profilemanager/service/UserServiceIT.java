@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-import com.github.viblanc.profilemanager.config.MyTestConfiguration;
+import com.github.viblanc.profilemanager.config.IntegrationTestConfig;
 import com.github.viblanc.profilemanager.dto.UserDto;
 import com.github.viblanc.profilemanager.dto.UserTypeDto;
 import com.github.viblanc.profilemanager.entity.User;
@@ -18,7 +18,7 @@ import com.github.viblanc.profilemanager.mappers.UserMapper;
 import com.github.viblanc.profilemanager.repository.UserRepository;
 import com.github.viblanc.profilemanager.repository.UserTypeRepository;
 
-@Import(MyTestConfiguration.class)
+@Import(IntegrationTestConfig.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class UserServiceIT {
 

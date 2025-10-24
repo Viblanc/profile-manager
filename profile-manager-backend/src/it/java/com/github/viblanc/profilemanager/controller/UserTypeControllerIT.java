@@ -7,18 +7,19 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import java.util.List;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.annotation.Import;
-import com.github.viblanc.profilemanager.config.MyTestConfiguration;
+import com.github.viblanc.profilemanager.config.IntegrationTestConfig;
 import com.github.viblanc.profilemanager.dto.UserTypeDto;
 import com.github.viblanc.profilemanager.entity.UserType;
 import com.github.viblanc.profilemanager.repository.UserTypeRepository;
 
-@Import(MyTestConfiguration.class)
+@Import(IntegrationTestConfig.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class UserTypeControllerIT {
 
@@ -34,7 +35,11 @@ class UserTypeControllerIT {
     void setUp() {
         RestAssured.baseURI = "http://localhost:" + port;
         userType = new UserType(null, "Admin", null);
-        userTypeRepository.deleteAll();
+    }
+    
+    @AfterEach
+    void tearDown() {
+    	userTypeRepository.deleteAll();
     }
 
     @Test

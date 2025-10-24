@@ -3,17 +3,17 @@ package com.github.viblanc.profilemanager.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-import com.github.viblanc.profilemanager.config.MyTestConfiguration;
+import com.github.viblanc.profilemanager.config.IntegrationTestConfig;
 import com.github.viblanc.profilemanager.dto.UserTypeDto;
 import com.github.viblanc.profilemanager.entity.UserType;
 import com.github.viblanc.profilemanager.repository.UserTypeRepository;
 
-@Import(MyTestConfiguration.class)
+@Import(IntegrationTestConfig.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class UserTypeServiceIT {
 
@@ -22,9 +22,9 @@ class UserTypeServiceIT {
 
     @Autowired
     private UserTypeRepository userTypeRepository;
-
-    @BeforeEach
-    void setUp() {
+    
+    @AfterEach
+    void tearDown() {
         userTypeRepository.deleteAll();
     }
 
